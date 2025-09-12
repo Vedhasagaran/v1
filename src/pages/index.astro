@@ -1,0 +1,12 @@
+---
+import Layout from '../layouts/Layout.astro';
+import ParallaxContainer from '../components/ParallaxContainer';
+import personal from '../personal';
+import styles from "./_style.module.scss";
+---
+
+<Layout title="Vedhasagaran">
+  <main class={styles.main}>   
+    <ParallaxContainer client:load personal={personal} />
+  </main>
+</Layout>

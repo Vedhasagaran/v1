@@ -1,0 +1,15 @@
+.cardContainer{
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    .card{
+        width:900px;
+        height:400px;
+        border-radius: 25px;
+        position: relative;
+        top:-10%;   
+    }
+}
