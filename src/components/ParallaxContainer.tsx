@@ -21,6 +21,7 @@ export default function ParallaxContainer({ personal } : any) {
             key={index}
             index={index}
             number={number.number}
+            text={number.text}
             color={number.color}
             targetScale={targetScale}
             progress={scrollYProgress}

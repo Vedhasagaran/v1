@@ -6,6 +6,7 @@ import styles from "./style.module.scss";
 interface CardProps {
   index: number;
   number: number;
+  text: string;
   color: string;
   progress: MotionValue<number>;
   range: number[];
@@ -15,6 +16,7 @@ interface CardProps {
 export default function Card({
   index,
   number,
+  text,
   color,
   progress,
   range,
@@ -31,7 +33,9 @@ export default function Card({
           top: `calc(-10% + ${index * 25}px)`,
         }}
         className={styles.card}
-      ></motion.div>
+      >
+        <p>{text}</p>
+      </motion.div>
     </div>
   );
 }
