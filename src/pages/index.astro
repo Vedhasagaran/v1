@@ -3,10 +3,14 @@ import Layout from '../layouts/Layout.astro';
 import ParallaxContainer from '../components/ParallaxContainer';
 import personal from '../personal';
 import styles from "./_style.module.scss";
+import FluidCursor from '../components/FluidCursor';
 ---
 
 <Layout title="Vedhasagaran">
-  <main class={styles.main}>   
-    <ParallaxContainer client:load personal={personal} />
-  </main>
+  <FluidCursor client:load />
+  <div class="relative flex flex-col items-center justify-start overflow-hidden px-4 pb-10 md:pb-20" style="position: relative; z-index: 1; min-height: 100vh; padding-top: 0;">
+    <main class={styles.main}>
+      <ParallaxContainer client:load personal={personal} />
+    </main>
+  </div>
 </Layout>
