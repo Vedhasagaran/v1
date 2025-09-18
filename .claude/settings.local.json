@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Read(//d/ine/portfolio/src/app/**)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

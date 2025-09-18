@@ -6,11 +6,30 @@ import styles from "./_style.module.scss";
 import FluidCursor from '../components/FluidCursor';
 ---
 
-<Layout title="Vedhasagaran">
+<Layout
+  title="Vedhasagaran - Software Development Engineer"
+  description="Welcome to Vedhasagaran's portfolio. Experienced full stack developer specializing in modern web technologies,Astro, Angular, React, Node.js, C# and innovative user experiences."
+  image="/og-image.jpeg"
+>
   <FluidCursor client:load />
   <div class="relative flex flex-col items-center justify-start overflow-hidden px-4 pb-10 md:pb-20" style="position: relative; z-index: 1; min-height: 100vh; padding-top: 0;">
-    <main class={styles.main}>
+    <main class={styles.main} role="main" aria-label="Portfolio showcase">
+      <h1 class="sr-only">Vedhasagaran - Full Stack Developer Portfolio</h1>
       <ParallaxContainer client:load personal={personal} />
     </main>
   </div>
 </Layout>
+
+<style>
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+</style>

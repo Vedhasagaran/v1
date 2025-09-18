@@ -1,19 +1,75 @@
 ---
 export interface Props {
   title: string;
+  description?: string;
+  image?: string;
+  url?: string;
 }
 
-const { title } = Astro.props;
+const {
+  title,
+  description = "Vedhasagaran's Portfolio - Full Stack Developer & Software Engineer. Explore my projects, skills, and experience in web development.",
+  image = "/og-image.jpeg",
+  url = Astro.url.href
+} = Astro.props;
+
+const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 ---
 
 <!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="description" content="Portfolio" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+    <!-- Primary Meta Tags -->
     <title>{title}</title>
+    <meta name="title" content={title} />
+    <meta name="description" content={description} />
+    <meta name="author" content="Vedhasagaran" />
+    <meta name="keywords" content="Vedhasagaran, portfolio, AI, developer, full stack, software engineer, web development, React, JavaScript, TypeScript" />
+    <link rel="canonical" href={canonicalURL} />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={url} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={new URL(image, Astro.site)} />
+    <meta property="og:site_name" content="Vedhasagaran's Portfolio" />
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content={url} />
+    <meta property="twitter:title" content={title} />
+    <meta property="twitter:description" content={description} />
+    <meta property="twitter:image" content={new URL(image, Astro.site)} />
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.jpeg" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+
+    <!-- Preconnect to improve performance -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+    <!-- JSON-LD Structured Data -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Person",
+        "name": "Vedhasagaran Mahalingam",
+        "url": {url},
+        "jobTitle": "Software Development Engineer",
+        "description": "Software Development Engineer at PRO specializing in full stack development with expertise in C#, Node.js, Angular, React, and database technologies.",
+        "knowsAbout": ["Full Stack Development", "C#", "Node.js", "Angular", "React", "SQL", "MongoDB", "Redis", "Web Development", "Software Engineering"],
+        "worksFor": {
+          "@type": "Organization",
+          "name": "PRO"
+        },
+        "sameAs": ["https://www.linkedin.com/in/vedhasagaran-m/"]
+      }
+    </script>
   </head>
   <body>
     <slot />
