@@ -23,7 +23,7 @@ export const names = [
 ];
 
 export const languageIndicators = [
-  { name: "English", dotColor: "bg-primary", delay: "0s" },
+  { name: "English", dotColor: "bg-purple-600", delay: "0s" },  // rgb(147, 51, 234)
   { name: "Tamil", dotColor: "bg-purple-500", delay: "0.2s" },
   { name: "Hindi", dotColor: "bg-pink-500", delay: "0.4s" }
 ];
@@ -31,3 +31,16 @@ export const languageIndicators = [
 export const role = "Software Development Engineer";
 export const company = "PRO";
 export const profileImage = "/VedhaProfile.jpeg"; // Add your image to public folder
+
+export const socialLinks = [
+  {
+    name: "LinkedIn",
+    url: "https://www.linkedin.com/in/vedhasagaran-m/",
+    icon: "linkedin"
+  },
+  {
+    name: "GitHub",
+    url: "https://github.com/vedhasagaran",
+    icon: "github"
+  }
+];

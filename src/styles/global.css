@@ -1,1 +1,42 @@
 @import "tailwindcss";
+
+/* Dark mode variables */
+:root {
+  --foreground: rgb(17, 24, 39);
+  --background: rgb(255, 255, 255);
+  --muted-foreground: rgb(75, 85, 99);
+  --card: rgb(243, 244, 246);
+  --border: rgb(229, 231, 235);
+}
+
+html.dark {
+  --foreground: rgb(255, 255, 255);
+  --background: rgb(17, 24, 39);
+  --muted-foreground: rgb(156, 163, 175);
+  --card: rgb(31, 41, 55);
+  --border: rgb(55, 65, 81);
+}
+
+html.dark .bg-card\/80 {
+  background-color: rgba(31, 41, 55, 0.8) !important;
+}
+
+.text-foreground {
+  color: var(--foreground);
+}
+
+.bg-card\/80 {
+  background-color: rgba(243, 244, 246, 0.8);
+}
+
+.dark .bg-card\/80 {
+  background-color: rgba(31, 41, 55, 0.8);
+}
+
+.border-border {
+  border-color: var(--border);
+}
+
+.text-muted-foreground {
+  color: var(--muted-foreground);
+}

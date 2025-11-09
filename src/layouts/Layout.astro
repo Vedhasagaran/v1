@@ -74,8 +74,21 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
         "sameAs": ["https://www.linkedin.com/in/vedhasagaran-m/"]
       }
     </script>
+
+    <!-- Prevent dark mode flash -->
+    <script is:inline>
+      (function() {
+        const savedTheme = localStorage.getItem('theme');
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        const shouldBeDark = savedTheme === 'dark' || (!savedTheme && prefersDark);
+
+        if (shouldBeDark) {
+          document.documentElement.classList.add('dark');
+        }
+      })();
+    </script>
   </head>
-  <body>
+  <body style="background-color: var(--background); color: var(--foreground); transition: background-color 0.3s, color 0.3s;">
     <slot />
   </body>
   <style>
