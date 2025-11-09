@@ -1,9 +1,10 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import ParallaxContainer from '../components/ParallaxContainer';
+import Hero from '../components/Hero';
 import personal from '../personal';
 import styles from "./_style.module.scss";
-import FluidCursor from '../components/FluidCursor';
+import CursorWrapper from '../components/CursorWrapper';
 ---
 
 <Layout
@@ -11,13 +12,10 @@ import FluidCursor from '../components/FluidCursor';
   description="Welcome to Vedhasagaran's portfolio. Experienced full stack developer specializing in modern web technologies,Astro, Angular, React, Node.js, C# and innovative user experiences."
   image="/og-image.jpeg"
 >
-  <FluidCursor client:load />
-  <div class="relative flex flex-col items-center justify-start overflow-hidden px-4 pb-10 md:pb-20" style="position: relative; z-index: 1; min-height: 100vh; padding-top: 0;">
-    <main class={styles.main} role="main" aria-label="Portfolio showcase">
-      <h1 class="sr-only">Vedhasagaran - Full Stack Developer Portfolio</h1>
-      <ParallaxContainer client:load personal={personal} />
-    </main>
-  </div>
+  <CursorWrapper client:only="react" />
+  <h1 class="sr-only">Vedhasagaran - Full Stack Developer Portfolio</h1>
+  <Hero client:only="react" />
+  <!-- <ParallaxContainer client:load personal={personal} /> -->
 </Layout>
 
 <style>
