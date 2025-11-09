@@ -16,7 +16,6 @@ export default function ThemeToggle() {
       <button
         onClick={toggleTheme}
         className="relative flex items-center justify-center w-12 h-12 bg-card/80 backdrop-blur-sm rounded-full border border-border shadow-lg hover:shadow-[0_0_20px_rgba(147,51,234,0.6)] hover:border-purple-500 hover:scale-105 transition-all duration-300"
-        title={isDark ? "Switch to Light Mode" : "Switch to Dark Mode"}
       >
         <span className="text-2xl">
           {isDark ? '☀️' : '🌙'}
