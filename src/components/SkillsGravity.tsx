@@ -41,43 +41,51 @@ export default function SkillsGravity({ skills, targetRef }: SkillsGravityProps)
     };
   }, [targetRef]);
 
-  // Generate random positions for each skill
-  const getRandomPosition = () => ({
-    x: Math.random() * window.innerWidth,
-    y: Math.random() * window.innerHeight,
-  });
+  // Generate position from screen edges for cleaner spawn
+  const getEdgePosition = (index: number) => {
+    const side = index % 4; // 0=top, 1=right, 2=bottom, 3=left
+    const offset = (Math.random() * 0.8 + 0.1); // 10-90% along the edge
+
+    switch(side) {
+      case 0: return { x: window.innerWidth * offset, y: -50 }; // Top
+      case 1: return { x: window.innerWidth + 50, y: window.innerHeight * offset }; // Right
+      case 2: return { x: window.innerWidth * offset, y: window.innerHeight + 50 }; // Bottom
+      case 3: return { x: -50, y: window.innerHeight * offset }; // Left
+      default: return { x: 0, y: 0 };
+    }
+  };
 
   return (
-    <div className="fixed inset-0 pointer-events-none z-0">
+    <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden">
       {skills.map((skill, index) => {
-        const startPos = getRandomPosition();
+        const startPos = getEdgePosition(index);
 
         return (
           <motion.img
             key={`${skill.name}-${key}-${index}`}
             src={skill.icon}
             alt={skill.name}
-            className="absolute w-12 h-12 md:w-14 md:h-14 object-contain"
+            className="absolute w-10 h-10 md:w-12 md:h-12 object-contain opacity-70"
             initial={{
               x: startPos.x,
               y: startPos.y,
               opacity: 0,
-              scale: 0.8,
+              scale: 0.5,
               rotate: 0,
             }}
             animate={{
-              x: targetPosition.x - 28,
-              y: targetPosition.y - 28,
-              opacity: [0, 0.8, 0.6, 0],
-              scale: [0.8, 1, 0.7, 0.4],
-              rotate: 720,
+              x: targetPosition.x - 24,
+              y: targetPosition.y - 24,
+              opacity: [0, 0.7, 0.5, 0],
+              scale: [0.5, 1, 0.6, 0.3],
+              rotate: 360,
             }}
             transition={{
-              duration: 5,
-              delay: index * 0.4,
-              ease: [0.6, 0.05, 0.01, 0.9],
+              duration: 6,
+              delay: index * 0.5,
+              ease: [0.4, 0, 0.2, 1],
               repeat: Infinity,
-              repeatDelay: (skills.length - index) * 0.4,
+              repeatDelay: (skills.length - index) * 0.5,
             }}
           />
         );
