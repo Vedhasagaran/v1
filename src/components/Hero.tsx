@@ -3,8 +3,25 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { names, languageIndicators, role, company, profileImage, socialLinks } from "../utils/heroData";
+import BlogList from "./BlogList";
+import ProjectsList from "./ProjectsList";
+import Skills from "./Skills";
+import type { Project } from "../utils/projectsData";
+import type { Skill } from "../utils/skillsData";
 
-export default function Hero() {
+interface MediumPost {
+  title: string;
+  link: string;
+  pubDate: string;
+}
+
+interface HeroProps {
+  blogPosts?: MediumPost[];
+  projects?: Project[];
+  skills?: Skill[];
+}
+
+export default function Hero({ blogPosts = [], projects = [], skills = [] }: HeroProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [displayedLanguageIndex, setDisplayedLanguageIndex] = useState(0);
 
@@ -28,8 +45,10 @@ export default function Hero() {
   const currentName = names[currentIndex];
 
   return (
-    <div className="flex items-center justify-center min-h-screen w-full px-4">
-      <div className="flex flex-col md:flex-row items-center justify-center gap-6 md:gap-4 w-full max-w-4xl">
+    <div className="w-full">
+      {/* Hero Section - Centered */}
+      <div className="flex items-center justify-center min-h-screen w-full px-4">
+        <div className="flex flex-col md:flex-row items-center justify-center gap-6 md:gap-4 w-full max-w-4xl">
         {/* Text Content - Left Side */}
         <motion.div
           initial={{ opacity: 0, x: -50 }}
@@ -154,6 +173,25 @@ export default function Hero() {
             className="w-full h-full object-cover"
           />
         </motion.div>
+        </div>
+      </div>
+
+      {/* Content Below Hero - Skills, Blog and Projects */}
+      <div className="flex flex-col items-center justify-center gap-12 w-full px-4 pb-20 -mt-50">
+        {/* Skills Section */}
+        <div className="w-full max-w-4xl">
+          {skills.length > 0 && <Skills skills={skills} />}
+        </div>
+
+        {/* Blog Posts Section */}
+        <div className="w-full max-w-4xl">
+          {blogPosts.length > 0 && <BlogList posts={blogPosts} />}
+        </div>
+
+        {/* Projects Section */}
+        <div className="w-full max-w-4xl">
+          {projects.length > 0 && <ProjectsList projects={projects} />}
+        </div>
       </div>
     </div>
   );

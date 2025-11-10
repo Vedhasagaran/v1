@@ -2,9 +2,16 @@
 import Layout from '../layouts/Layout.astro';
 import ParallaxContainer from '../components/ParallaxContainer';
 import Hero from '../components/Hero';
+import Footer from '../components/Footer';
 import personal from '../personal';
 import styles from "./_style.module.scss";
 import CursorWrapper from '../components/CursorWrapper';
+import { getMediumPosts } from '../utils/mediumFeed';
+import { projects } from '../utils/projectsData';
+import { skills } from '../utils/skillsData';
+
+// Fetch Medium posts
+const mediumPosts = await getMediumPosts('vedhasagaran7', 5);
 ---
 
 <Layout
@@ -14,7 +21,8 @@ import CursorWrapper from '../components/CursorWrapper';
 >
   <CursorWrapper client:only="react" />
   <h1 class="sr-only">Vedhasagaran - Full Stack Developer Portfolio</h1>
-  <Hero client:only="react" />
+  <Hero client:only="react" blogPosts={mediumPosts} projects={projects} skills={skills} />
+  <Footer client:only="react" />
   <!-- <ParallaxContainer client:load personal={personal} /> -->
 </Layout>
 

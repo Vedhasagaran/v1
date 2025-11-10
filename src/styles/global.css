@@ -7,6 +7,12 @@
   --muted-foreground: rgb(75, 85, 99);
   --card: rgb(243, 244, 246);
   --border: rgb(229, 231, 235);
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  --accent-color: oklch(55.27% .195 19.06);
+}
+
+body {
+  font-family: var(--font-mono);
 }
 
 html.dark {
@@ -15,6 +21,7 @@ html.dark {
   --muted-foreground: rgb(156, 163, 175);
   --card: rgb(31, 41, 55);
   --border: rgb(55, 65, 81);
+  --accent-color: oklch(70.91% .1415 163.7);
 }
 
 html.dark .bg-card\/80 {
