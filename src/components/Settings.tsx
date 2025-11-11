@@ -66,7 +66,7 @@ export default function Settings() {
                 {/* Animations Toggle */}
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm font-medium text-foreground">Animations</p>
+                    <p className="text-sm font-medium text-foreground">Skill Animations</p>
                     <p className="text-xs text-muted-foreground">Enable motion effects</p>
                   </div>
                   <button
