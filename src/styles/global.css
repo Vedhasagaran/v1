@@ -1,5 +1,9 @@
 @import "tailwindcss";
 
+@theme {
+  --color-scheme: light dark;
+}
+
 /* Dark mode variables */
 :root {
   --foreground: rgb(17, 24, 39);
@@ -46,5 +50,30 @@ html.dark .bg-card\/80 {
 
 .text-muted-foreground {
   color: var(--muted-foreground);
+}
+
+/* Theme toggle icon transitions */
+#sun-svg {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+#moon-svg {
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(0);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.dark #sun-svg,
+html.dark #sun-svg {
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(0);
+}
+
+.dark #moon-svg,
+html.dark #moon-svg {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1);
 }
 

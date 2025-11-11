@@ -2,10 +2,8 @@
 import { useEffect } from 'react';
 
 import fluidCursor from './hooks/use-FluidCursor';
-import { useCursor } from '../context/CursorContext';
 
 const FluidCursor = () => {
-  const { isEnabled } = useCursor();
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -26,9 +24,7 @@ const FluidCursor = () => {
       width: '100vw',
       height: '100vh',
       zIndex: -1,
-      pointerEvents: 'none',
-      opacity: isEnabled ? 1 : 0,
-      transition: 'opacity 0.5s ease'
+      pointerEvents: 'none'
     }}>
       <canvas id="fluid" style={{ width: '100%', height: '100%' }} />
     </div>

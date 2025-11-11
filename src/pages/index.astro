@@ -1,11 +1,6 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import ParallaxContainer from '../components/ParallaxContainer';
-import Hero from '../components/Hero';
-import Footer from '../components/Footer';
-import personal from '../personal';
-import styles from "./_style.module.scss";
-import CursorWrapper from '../components/CursorWrapper';
+import Providers from '../components/Providers';
 import { getMediumPosts } from '../utils/mediumFeed';
 import { projects } from '../utils/projectsData';
 import { skills } from '../utils/skillsData';
@@ -19,23 +14,6 @@ const mediumPosts = await getMediumPosts('vedhasagaran7', 5);
   description="Welcome to Vedhasagaran's portfolio. Experienced full stack developer specializing in modern web technologies,Astro, Angular, React, Node.js, C# and innovative user experiences."
   image="/og-image.jpeg"
 >
-  <CursorWrapper client:only="react" />
-  <h1 class="sr-only">Vedhasagaran - Full Stack Developer Portfolio</h1>
-  <Hero client:only="react" blogPosts={mediumPosts} projects={projects} skills={skills} />
-  <Footer client:only="react" />
+  <Providers client:only="react" blogPosts={mediumPosts} projects={projects} skills={skills} />
   <!-- <ParallaxContainer client:load personal={personal} /> -->
 </Layout>
-
-<style>
-  .sr-only {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    padding: 0;
-    margin: -1px;
-    overflow: hidden;
-    clip: rect(0, 0, 0, 0);
-    white-space: nowrap;
-    border: 0;
-  }
-</style>

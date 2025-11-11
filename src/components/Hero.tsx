@@ -6,6 +6,8 @@ import { names, languageIndicators, role, company, profileImage, socialLinks } f
 import BlogList from "./BlogList";
 import ProjectsList from "./ProjectsList";
 import SkillsGravity from "./SkillsGravity";
+import Skills from "./Skills";
+import { usePreferences } from "../contexts/PreferencesContext";
 import type { Project } from "../utils/projectsData";
 import type { Skill } from "../utils/skillsData";
 
@@ -25,6 +27,7 @@ export default function Hero({ blogPosts = [], projects = [], skills = [] }: Her
   const [currentIndex, setCurrentIndex] = useState(0);
   const [displayedLanguageIndex, setDisplayedLanguageIndex] = useState(0);
   const profileImageRef = useRef<HTMLDivElement>(null);
+  const { animationsEnabled } = usePreferences();
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -47,11 +50,11 @@ export default function Hero({ blogPosts = [], projects = [], skills = [] }: Her
 
   return (
     <div className="w-full">
-      {/* Gravitational Skills Effect */}
-      {skills.length > 0 && <SkillsGravity skills={skills} targetRef={profileImageRef} />}
+      {/* Gravitational Skills Effect - Only when animations enabled */}
+      {animationsEnabled && skills.length > 0 && <SkillsGravity skills={skills} targetRef={profileImageRef} />}
 
       {/* Hero Section - Centered */}
-      <div className="flex items-center justify-center min-h-screen w-full px-4">
+      <div className="flex items-center justify-center min-h-[60vh] w-full px-4 pt-20">
         <div className="flex flex-col md:flex-row items-center justify-center gap-6 md:gap-4 w-full max-w-4xl">
         {/* Text Content - Left Side */}
         <motion.div
@@ -175,14 +178,23 @@ export default function Hero({ blogPosts = [], projects = [], skills = [] }: Her
           <img
             src={profileImage}
             alt="Profile"
+            loading="eager"
+            decoding="async"
             className="w-full h-full object-cover"
           />
         </motion.div>
         </div>
       </div>
 
-      {/* Content Below Hero - Blog and Projects */}
-      <div className="flex flex-col items-center justify-center gap-12 w-full px-4 pb-20 -mt-50">
+      {/* Content Below Hero - Skills, Blog and Projects */}
+      <div className="flex flex-col items-center justify-center gap-16 w-full px-4 pb-20">
+        {/* Skills Section - Only when animations disabled */}
+        {!animationsEnabled && skills.length > 0 && (
+          <div className="w-full max-w-4xl">
+            <Skills skills={skills} />
+          </div>
+        )}
+
         {/* Blog Posts Section */}
         <div className="w-full max-w-4xl">
           {blogPosts.length > 0 && <BlogList posts={blogPosts} />}
