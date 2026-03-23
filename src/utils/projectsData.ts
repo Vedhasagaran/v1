@@ -11,6 +11,28 @@ export interface Project {
 
 export const projects: Project[] = [
   {
+    title: "FocusGrid",
+    description:
+      "A collaborative task management application featuring quadrant-based organization, real-time team boards, and detailed task history tracking.",
+    link: "https://focus-grid-three.vercel.app/",
+    tags: ["React", "TypeScript", "Vite", "Firebase"],
+    stats: {
+      label: "Status",
+      value: "Live",
+    },
+  },
+  {
+    title: "DevType",
+    description:
+      "A specialized typing practice application for developers, featuring context-specific categories like AI prompts and code snippets to improve typing speed and accuracy.",
+    link: "https://devtype-tau.vercel.app/",
+    tags: ["Html", "Css", "Javascript", "Vite"],
+    stats: {
+      label: "Status",
+      value: "Live",
+    },
+  },
+  {
     title: "balloon-feedback",
     description:
       "Interactive balloon pop feedback component for React. Collect user feedback with satisfying burst animations, sound effects, and analytics integration.",
@@ -30,18 +52,6 @@ export const projects: Project[] = [
     stats: {
       label: "PyPI",
       value: "Package",
-    },
-  },
-  // Add more projects here
-  {
-    title: "DevType",
-    description:
-      "A specialized typing practice application for developers, featuring context-specific categories like AI prompts and code snippets to improve typing speed and accuracy.",
-    link: "https://devtype-tau.vercel.app/",
-    tags: ["Html", "Css", "Javascript", "Vite"],
-    stats: {
-      label: "Status",
-      value: "Live",
     },
   },
 ];

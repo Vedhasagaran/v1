@@ -46,14 +46,7 @@ export default function FeedbackBalloons() {
     // Store feedback
     localStorage.setItem('nightModeFeedback', JSON.stringify({ rating, label, timestamp: Date.now() }));
 
-    // Send to Microsoft Clarity
-    if (globalThis.window !== undefined && (globalThis.window as any).clarity) {
-      (globalThis.window as any).clarity('event', 'night_mode_feedback', {
-        rating: rating,
-        label: label,
-        timestamp: Date.now()
-      });
-    }
+
 
     console.log('Feedback submitted:', { rating, label });
 
