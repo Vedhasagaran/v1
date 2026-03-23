@@ -6,7 +6,11 @@ import { loadSlim } from '@tsparticles/slim';
 import { useTheme } from '../context/ThemeContext';
 import type { ISourceOptions } from '@tsparticles/engine';
 
-export default function ParticlesBackground() {
+interface ParticlesBackgroundProps {
+  scopedToContainer?: boolean;
+}
+
+export default function ParticlesBackground({ scopedToContainer = false }: Readonly<ParticlesBackgroundProps>) {
   const [init, setInit] = useState(false);
   const { isDark } = useTheme();
 
@@ -19,6 +23,9 @@ export default function ParticlesBackground() {
   }, []);
 
   const options = useMemo<ISourceOptions>(() => ({
+    fullScreen: {
+      enable: false,
+    },
     background: {
       color: {
         value: 'transparent',
@@ -86,8 +93,12 @@ export default function ParticlesBackground() {
     return null;
   }
 
+  const containerClass = scopedToContainer
+    ? 'absolute inset-0 w-full h-full pointer-events-none'
+    : 'fixed inset-0 w-full h-full pointer-events-none';
+
   return (
-    <div className="fixed inset-0 w-full h-full pointer-events-none" style={{ zIndex: 0 }}>
+    <div className={containerClass} style={{ zIndex: 0 }}>
       <Particles
         id="tsparticles"
         options={options}

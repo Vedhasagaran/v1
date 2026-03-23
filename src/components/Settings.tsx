@@ -13,7 +13,7 @@ export default function Settings() {
       {/* Settings Button */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="fixed bottom-6 right-6 z-50 w-12 h-12 rounded-full bg-card border-2 border-border hover:border-[var(--accent-color)] shadow-lg transition-all duration-300 flex items-center justify-center group"
+        className="fixed bottom-6 left-6 z-50 w-12 h-12 rounded-full bg-card border-2 border-border hover:border-[var(--accent-color)] shadow-lg transition-all duration-300 flex items-center justify-center group"
         aria-label="Settings"
       >
         <svg
@@ -56,7 +56,7 @@ export default function Settings() {
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 20 }}
               transition={{ duration: 0.2 }}
-              className="fixed bottom-24 right-6 z-50 w-80 bg-card border border-border rounded-lg shadow-2xl p-6"
+              className="fixed bottom-24 left-6 z-50 w-80 bg-card border border-border rounded-lg shadow-2xl p-6"
             >
               <h3 className="text-lg font-bold mb-4" style={{ color: 'var(--accent-color)' }}>
                 Settings

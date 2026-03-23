@@ -11,11 +11,11 @@ export default function ThemeToggle() {
       initial={{ opacity: 0, y: -50 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: 0.5, duration: 0.5 }}
-      className="fixed top-6 right-6 z-50"
+      className="fixed right-4 top-24 md:top-6 md:right-6 z-50"
     >
       <button
         onClick={toggleTheme}
-        className="relative flex items-center justify-center w-12 h-12 bg-card/80 backdrop-blur-sm rounded-full border border-border shadow-lg hover:shadow-[0_0_20px_rgba(147,51,234,0.6)] hover:border-[var(--accent-color)] hover:scale-105 transition-all duration-300"
+        className="relative flex items-center justify-center w-12 h-12 bg-card/80 backdrop-blur-sm rounded-full border border-border shadow-lg hover:shadow-[0_0_20px_rgba(147,51,234,0.6)] hover:border-(--accent-color) hover:scale-105 transition-all duration-300"
         style={{ color: 'var(--accent-color)' }}
       >
         {/* Sun Icon */}

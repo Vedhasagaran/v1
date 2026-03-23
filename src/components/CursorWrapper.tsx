@@ -1,12 +1,10 @@
 'use client';
 
 import { useEffect } from 'react';
-import { ThemeProvider } from '../context/ThemeContext';
 import { usePreferences } from '../contexts/PreferencesContext';
 import FluidCursor from './FluidCursor';
 import ThemeToggle from './ThemeToggle';
 import Settings from './Settings';
-import ParticlesBackground from './ParticlesBackground';
 import { AnimatePresence, motion } from 'framer-motion';
 
 function CursorContent() {
@@ -31,7 +29,7 @@ function CursorContent() {
   return (
     <>
       <AnimatePresence mode="wait">
-        {cursorEnabled ? (
+        {cursorEnabled && (
           <motion.div
             key="fluid"
             initial={{ opacity: 0 }}
@@ -40,16 +38,6 @@ function CursorContent() {
             transition={{ duration: 0.5 }}
           >
             <FluidCursor />
-          </motion.div>
-        ) : (
-          <motion.div
-            key="particles"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.5 }}
-          >
-            <ParticlesBackground />
           </motion.div>
         )}
       </AnimatePresence>
@@ -60,9 +48,5 @@ function CursorContent() {
 }
 
 export default function CursorWrapper() {
-  return (
-    <ThemeProvider>
-      <CursorContent />
-    </ThemeProvider>
-  );
+  return <CursorContent />;
 }

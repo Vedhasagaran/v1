@@ -11,40 +11,37 @@ export default function Skills({ skills }: SkillsProps) {
   return (
     <motion.div
       initial={{ opacity: 0, y: 30 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-50px" }}
+      transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
       className="w-full"
     >
-      <h2
-        className="text-2xl md:text-3xl font-bold mb-8 text-center"
-        style={{ color: 'var(--accent-color)' }}
-      >
-        Skills
+      <h2 className="text-4xl md:text-5xl font-extrabold tracking-tighter mb-16 text-center text-foreground">
+        Tooling
       </h2>
-      <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-4 justify-items-center">
+      <div className="flex flex-wrap gap-8 md:gap-12 justify-center max-w-4xl mx-auto">
         {skills.map((skill, index) => (
           <div
             key={skill.name}
-            className="group cursor-pointer"
+            className="group cursor-pointer flex flex-col items-center gap-4"
             title={skill.name}
           >
             <motion.div
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.3, delay: 0.3 + index * 0.05 }}
-              className="w-16 h-16 md:w-20 md:h-20 flex flex-col items-center justify-center gap-2 bg-card/50 border border-border hover:border-[var(--accent-color)] hover:bg-card transition-all duration-300 p-2 rounded-lg"
+              initial={{ opacity: 0, scale: 0.9 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: index * 0.05, ease: [0.16, 1, 0.3, 1] }}
+              className="w-16 h-16 md:w-20 md:h-20 flex bg-transparent items-center justify-center md:grayscale md:opacity-50 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-500"
             >
-              <motion.img
+              <img
                 src={skill.icon}
                 alt={skill.name}
-                className="w-10 h-10 md:w-12 md:h-12 object-contain"
-                whileHover={{ scale: 1.2, y: -2 }}
-                transition={{ duration: 0.2 }}
+                className="w-10 h-10 md:w-14 md:h-14 object-contain filter drop-shadow-sm group-hover:drop-shadow-xl transition-all duration-500 transform group-hover:-translate-y-2"
               />
-              <span className="text-xs text-muted-foreground text-center leading-tight hidden md:block">
-                {skill.name}
-              </span>
             </motion.div>
+            <span className="text-[10px] sm:text-xs font-semibold tracking-[0.2em] uppercase text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+              {skill.name}
+            </span>
           </div>
         ))}
       </div>
