@@ -19,8 +19,19 @@ export default function BlogSearch({ posts }: Readonly<BlogSearchProps>) {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedTag, setSelectedTag] = useState<string | null>(null);
   const [filteredPosts, setFilteredPosts] = useState<Post[]>(posts);
+  const [currentPage, setCurrentPage] = useState(1);
 
-  const allTags = Array.from(new Set(posts.flatMap(post => post.tags)));
+  const allTags = Array.from(
+    new Set(posts.flatMap(post => post.tags))
+  ).sort((a, b) => {
+    const countA = posts.filter(p => p.tags.includes(a)).length;
+    const countB = posts.filter(p => p.tags.includes(b)).length;
+    return countB - countA;
+  });
+
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [searchQuery, selectedTag]);
 
   useEffect(() => {
     async function initOrama() {
@@ -78,6 +89,11 @@ export default function BlogSearch({ posts }: Readonly<BlogSearchProps>) {
     }).format(new Date(dateString));
   };
 
+  const ITEMS_PER_PAGE = 3;
+  const totalPages = Math.ceil(filteredPosts.length / ITEMS_PER_PAGE);
+  const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+  const paginatedPosts = filteredPosts.slice(startIndex, startIndex + ITEMS_PER_PAGE);
+
   return (
     <div className="w-full">
       <div className="flex flex-col gap-6 mb-12">
@@ -90,10 +106,21 @@ export default function BlogSearch({ posts }: Readonly<BlogSearchProps>) {
         />
 
         {allTags.length > 0 && (
-          <div className="flex flex-wrap gap-2">
+          <div 
+            className="flex gap-2 overflow-x-auto py-2 -my-2 no-scrollbar scroll-smooth whitespace-nowrap"
+            style={{
+              scrollbarWidth: 'none',
+              msOverflowStyle: 'none',
+            }}
+          >
+            <style dangerouslySetInnerHTML={{__html: `
+              .no-scrollbar::-webkit-scrollbar {
+                display: none;
+              }
+            `}} />
             <button
               onClick={() => setSelectedTag(null)}
-              className={`px-4 py-1.5 rounded-full text-xs font-semibold uppercase tracking-widest border transition-all duration-300 ${
+              className={`shrink-0 px-4 py-1.5 rounded-full text-xs font-semibold uppercase tracking-widest border transition-all duration-300 ${
                 selectedTag === null
                   ? 'bg-(--accent-color) border-(--accent-color) text-white'
                   : 'bg-transparent border-border text-muted-foreground hover:text-foreground'
@@ -105,7 +132,7 @@ export default function BlogSearch({ posts }: Readonly<BlogSearchProps>) {
               <button
                 key={tag}
                 onClick={() => setSelectedTag(selectedTag === tag ? null : tag)}
-                className={`px-4 py-1.5 rounded-full text-xs font-semibold uppercase tracking-widest border transition-all duration-300 ${
+                className={`shrink-0 px-4 py-1.5 rounded-full text-xs font-semibold uppercase tracking-widest border transition-all duration-300 ${
                   selectedTag === tag
                     ? 'bg-(--accent-color) border-(--accent-color) text-white'
                     : 'bg-transparent border-border text-muted-foreground hover:text-foreground'
@@ -120,8 +147,8 @@ export default function BlogSearch({ posts }: Readonly<BlogSearchProps>) {
 
       <div className="border-y border-border">
         <AnimatePresence mode="popLayout">
-          {filteredPosts.length > 0 ? (
-            filteredPosts.map((post, index) => (
+          {paginatedPosts.length > 0 ? (
+            paginatedPosts.map((post, index) => (
               <motion.a
                 layout
                 key={post.slug}
@@ -178,6 +205,28 @@ export default function BlogSearch({ posts }: Readonly<BlogSearchProps>) {
           )}
         </AnimatePresence>
       </div>
+
+      {totalPages > 1 && (
+        <div className="flex items-center justify-between mt-10">
+          <button
+            onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+            disabled={currentPage === 1}
+            className="px-4 py-2 text-xs font-semibold uppercase tracking-widest border border-border rounded-xl text-muted-foreground hover:text-foreground hover:border-foreground disabled:opacity-30 disabled:pointer-events-none transition-all duration-300"
+          >
+            &larr; Previous
+          </button>
+          <span className="text-xs font-mono uppercase tracking-widest text-muted-foreground">
+            Page {currentPage} of {totalPages}
+          </span>
+          <button
+            onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
+            disabled={currentPage === totalPages}
+            className="px-4 py-2 text-xs font-semibold uppercase tracking-widest border border-border rounded-xl text-muted-foreground hover:text-foreground hover:border-foreground disabled:opacity-30 disabled:pointer-events-none transition-all duration-300"
+          >
+            Next &rarr;
+          </button>
+        </div>
+      )}
     </div>
   );
 }
