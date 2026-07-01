@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { usePreferences } from '../contexts/PreferencesContext';
+import { usePreferences } from '@/contexts/PreferencesContext';
 
 export default function Settings() {
   const [isOpen, setIsOpen] = useState(false);

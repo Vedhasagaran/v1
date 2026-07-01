@@ -1,0 +1,61 @@
+---
+import Layout from '@/layouts/Layout.astro';
+import Providers from '@/components/layout/Providers';
+import Footer from '@/components/layout/Footer';
+
+export interface Props {
+  title: string;
+  description: string;
+  pubDate: Date;
+  tags: string[];
+  readTime?: string;
+}
+
+const { title, description, pubDate, tags, readTime } = Astro.props;
+---
+
+<Layout title={title} description={description}>
+  <Providers client:only="react" skills={[]} />
+  
+  <div id="progress-bar-container" class="fixed top-0 left-0 w-full h-1 bg-transparent z-[100]">
+    <div id="progress-bar" class="h-full bg-[var(--accent-color)] w-0 transition-all duration-75"></div>
+  </div>
+  
+  <div class="max-w-3xl mx-auto px-6 pt-36 pb-16">
+    <a href="/blog" class="inline-flex items-center gap-2 text-sm font-semibold uppercase tracking-widest text-muted-foreground hover:text-foreground mb-12 transition-colors">
+      <span>&larr;</span> Back to articles
+    </a>
+    
+    <article class="w-full">
+      <header class="mb-12">
+        <div class="flex flex-wrap gap-2 mb-4">
+          {tags.map((tag: string) => (
+            <span class="text-[10px] md:text-xs font-semibold px-3 py-1 rounded-full border border-border text-muted-foreground uppercase tracking-widest">
+              {tag}
+            </span>
+          ))}
+        </div>
+        <h1 class="text-4xl md:text-5xl font-extrabold tracking-tighter text-foreground mb-6 leading-tight">
+          {title}
+        </h1>
+        <div class="flex items-center gap-4 text-xs font-semibold uppercase tracking-widest text-muted-foreground font-mono">
+          <time datetime={pubDate.toISOString()}>
+            {new Intl.DateTimeFormat('en-US', { month: 'long', day: 'numeric', year: 'numeric' }).format(pubDate)}
+          </time>
+          {readTime && (
+            <>
+              <span>&middot;</span>
+              <span>{readTime}</span>
+            </>
+          )}
+        </div>
+      </header>
+      
+      <div class="prose prose-neutral dark:prose-invert max-w-none text-base md:text-lg font-light leading-relaxed">
+        <slot />
+      </div>
+    </article>
+  </div>
+
+  <Footer />
+</Layout>

@@ -74,5 +74,10 @@ export const socialLinks = [
     name: "GitHub",
     url: "https://github.com/vedhasagaran",
     icon: "github"
+  },
+  {
+    name: "Medium",
+    url: "https://medium.com/@vedhasagaran7",
+    icon: "medium"
   }
 ];

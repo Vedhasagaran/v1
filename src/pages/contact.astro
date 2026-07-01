@@ -1,0 +1,21 @@
+---
+import Layout from '@/layouts/Layout.astro';
+import Providers from '@/components/layout/Providers';
+import ContactSection from '@/components/sections/Contact';
+import Footer from '@/components/layout/Footer';
+---
+
+<Layout
+  title="Contact - Vedhasagaran"
+  description="Get in touch with Vedhasagaran for collaborations, hiring opportunities, or software engineering inquiries."
+>
+  <Providers client:only="react" skills={[]} />
+
+  <div class="max-w-4xl mx-auto px-6 pt-36 pb-16 flex flex-col gap-16 items-center justify-center w-full">
+    <div class="w-full">
+      <ContactSection client:load />
+    </div>
+  </div>
+
+  <Footer />
+</Layout>

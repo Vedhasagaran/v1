@@ -1,7 +1,7 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import type { Project } from '../utils/projectsData';
+import type { Project } from '@/data/projectsData';
 
 interface ProjectsListProps {
   projects: Project[];

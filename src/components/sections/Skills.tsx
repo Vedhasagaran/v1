@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import type { Skill } from '../utils/skillsData';
+import type { Skill } from '@/data/skillsData';
 
 interface SkillsProps {
   skills: Skill[];

@@ -1,10 +1,10 @@
 'use client';
 
 import { useEffect } from 'react';
-import { usePreferences } from '../contexts/PreferencesContext';
+import { usePreferences } from '@/contexts/PreferencesContext';
 import FluidCursor from './FluidCursor';
-import ThemeToggle from './ThemeToggle';
-import Settings from './Settings';
+import ThemeToggle from '@/components/settings/ThemeToggle';
+import Settings from '@/components/settings/Settings';
 import { AnimatePresence, motion } from 'framer-motion';
 
 function CursorContent() {

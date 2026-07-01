@@ -1,0 +1,44 @@
+---
+import { getCollection } from 'astro:content';
+import Layout from '@/layouts/Layout.astro';
+import Providers from '@/components/layout/Providers';
+import Footer from '@/components/layout/Footer';
+import BlogSearch from '@/components/blog/BlogSearch';
+
+const posts = (await getCollection('blog'))
+  .filter(p => !p.data.draft)
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+  .map(p => ({
+    slug: p.slug,
+    title: p.data.title,
+    description: p.data.description,
+    pubDate: p.data.pubDate.toISOString(),
+    tags: p.data.tags,
+  }));
+---
+
+<Layout
+  title="Writing - Vedhasagaran"
+  description="Explore articles on software development, Astro, React, C#, and modern web performance engineering by Vedhasagaran."
+>
+  <Providers client:only="react" skills={[]} />
+
+  <div class="max-w-3xl mx-auto px-6 pt-36 pb-16">
+    <a href="/" class="inline-flex items-center gap-2 text-sm font-semibold uppercase tracking-widest text-muted-foreground hover:text-foreground mb-12 transition-colors">
+      <span>&larr;</span> Back to Home
+    </a>
+
+    <header class="mb-12">
+      <h1 class="text-4xl md:text-5xl font-extrabold tracking-tighter text-foreground mb-4">
+        Writing
+      </h1>
+      <p class="text-base md:text-lg text-muted-foreground font-light">
+        Thoughts, guides, and insights on code, architecture, and technology.
+      </p>
+    </header>
+
+    <BlogSearch client:load posts={posts} />
+  </div>
+
+  <Footer />
+</Layout>

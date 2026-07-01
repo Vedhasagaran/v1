@@ -13,6 +13,7 @@ export default defineConfig({
 
   site: 'https://vedhasagaran.dev',
   compressHTML: true,
+  prefetch: true,
 
   build: {
     inlineStylesheets: 'auto'

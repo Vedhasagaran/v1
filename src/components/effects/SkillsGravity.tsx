@@ -2,7 +2,7 @@
 
 import { motion } from 'framer-motion';
 import { useState, useEffect } from 'react';
-import type { Skill } from '../utils/skillsData';
+import type { Skill } from '@/data/skillsData';
 
 interface SkillsGravityProps {
   skills: Skill[];

@@ -1,4 +1,5 @@
 ---
+import { ClientRouter } from 'astro:transitions';
 import '../styles/global.css';
 
 export interface Props {
@@ -61,22 +62,20 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
     <!-- JSON-LD Structured Data -->
-    <script type="application/ld+json">
-      {
-        "@context": "https://schema.org",
-        "@type": "Person",
-        "name": "Vedhasagaran Mahalingam",
-        "url": {url},
-        "jobTitle": "Software Development Engineer",
-        "description": "Software Development Engineer at PRO specializing in full stack development with expertise in C#, Node.js, Angular, React, and database technologies.",
-        "knowsAbout": ["Full Stack Development", "C#", "Node.js", "Angular", "React", "SQL", "MongoDB", "Redis", "Web Development", "Software Engineering"],
-        "worksFor": {
-          "@type": "Organization",
-          "name": "PRO"
-        },
-        "sameAs": ["https://www.linkedin.com/in/vedhasagaran-m/"]
-      }
-    </script>
+    <script type="application/ld+json" set:html={JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "name": "Vedhasagaran Mahalingam",
+      "url": url,
+      "jobTitle": "Software Development Engineer",
+      "description": "Software Development Engineer at PRO specializing in full stack development with expertise in C#, Node.js, Angular, React, and database technologies.",
+      "knowsAbout": ["Full Stack Development", "C#", "Node.js", "Angular", "React", "SQL", "MongoDB", "Redis", "Web Development", "Software Engineering"],
+      "worksFor": {
+        "@type": "Organization",
+        "name": "PRO"
+      },
+      "sameAs": ["https://www.linkedin.com/in/vedhasagaran-m/"]
+    })} />
 
     <script is:inline>
       (function() {
@@ -113,19 +112,36 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
     </script>
 
 
+    <ClientRouter />
   </head>
   <body style="background-color: var(--background); color: var(--foreground); transition: background-color 0.3s, color 0.3s;">
     <slot />
     
     <!-- Lenis Smooth Scroll -->
     <script>
-      import Lenis from 'lenis'
-      const lenis = new Lenis()
-      function raf(time: number) {
-        lenis.raf(time)
-        requestAnimationFrame(raf)
-      }
-      requestAnimationFrame(raf)
+      import Lenis from 'lenis';
+
+      let lenis: Lenis | null = null;
+
+      document.addEventListener('astro:page-load', () => {
+        if (lenis) {
+          lenis.destroy();
+        }
+        lenis = new Lenis();
+        function raf(time: number) {
+          lenis?.raf(time);
+          requestAnimationFrame(raf);
+        }
+        requestAnimationFrame(raf);
+      });
+
+      window.addEventListener('scroll', () => {
+        const progress = document.getElementById('progress-bar');
+        if (!progress) return;
+        const totalHeight = document.documentElement.scrollHeight - window.innerHeight;
+        const scrollPct = totalHeight > 0 ? (window.scrollY / totalHeight) * 100 : 0;
+        progress.style.width = `${scrollPct}%`;
+      }, { passive: true });
     </script>
   </body>
 </html>

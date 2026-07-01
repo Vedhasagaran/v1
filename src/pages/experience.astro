@@ -1,0 +1,27 @@
+---
+import Layout from '@/layouts/Layout.astro';
+import Providers from '@/components/layout/Providers';
+import ExperienceSection from '@/components/sections/Experience';
+import Skills from '@/components/sections/Skills';
+import Footer from '@/components/layout/Footer';
+import { skills } from '@/data/skillsData';
+---
+
+<Layout
+  title="Experience - Vedhasagaran"
+  description="Learn about Vedhasagaran's professional work history, skills, and engineering experience."
+>
+  <Providers client:only="react" skills={skills} />
+
+  <div class="max-w-4xl mx-auto px-6 pt-36 pb-16 flex flex-col gap-24 items-center justify-center w-full">
+    <div class="w-full">
+      <ExperienceSection client:load />
+    </div>
+
+    <div class="w-full">
+      <Skills skills={skills} client:load />
+    </div>
+  </div>
+
+  <Footer />
+</Layout>

@@ -2,7 +2,7 @@
 
 import { useScroll } from 'framer-motion';
 import { useRef } from 'react';
-import Card from './card/index';
+import Card from '@/components/ui/card/index';
 
 export default function ParallaxContainer({ personal } : any) {
   const container = useRef<HTMLDivElement>(null);

@@ -4,55 +4,59 @@ import { useEffect, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 
 const navItems = [
-  { label: 'About', href: '#about' },
-  { label: 'Experience', href: '#experience' },
-  { label: 'Projects', href: '#projects' },
-  { label: 'Blog', href: '#blog' },
-  { label: 'Contact', href: '#contact' },
+  { label: 'About', href: '/#about' },
+  { label: 'Experience', href: '/experience' },
+  { label: 'Projects', href: '/projects' },
+  { label: 'Blog', href: '/blog' },
+  { label: 'Contact', href: '/contact' },
 ];
 
 export default function Header() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState('home');
+  const [isHome, setIsHome] = useState(true);
 
   const closeMobileMenu = () => setIsMobileMenuOpen(false);
 
   useEffect(() => {
-    const sectionIds = ['home', ...navItems.map((item) => item.href.slice(1))];
+    const pathname = window.location.pathname;
+    setIsHome(pathname === '/' || pathname === '');
 
-    const updateActiveSection = () => {
-      const threshold = Math.max(140, window.innerHeight * 0.4);
-      let current = 'home';
-
-      for (const id of sectionIds) {
-        const section = document.getElementById(id);
-        if (!section) {
-          continue;
+    if (pathname.startsWith('/experience')) {
+      setActiveSection('experience');
+    } else if (pathname.startsWith('/projects')) {
+      setActiveSection('projects');
+    } else if (pathname.startsWith('/blog')) {
+      setActiveSection('blog');
+    } else if (pathname.startsWith('/contact')) {
+      setActiveSection('contact');
+    } else {
+      const updateActiveSection = () => {
+        const threshold = Math.max(140, window.innerHeight * 0.4);
+        let current = 'home';
+        const aboutSection = document.getElementById('about');
+        if (aboutSection && aboutSection.getBoundingClientRect().top <= threshold) {
+          current = 'about';
         }
+        setActiveSection(current);
+      };
 
-        if (section.getBoundingClientRect().top <= threshold) {
-          current = id;
-        }
-      }
-
-      // Ensure the final section can still become active near page end.
-      const nearBottom = window.innerHeight + window.scrollY >= document.body.offsetHeight - 40;
-      if (nearBottom && document.getElementById('contact')) {
-        current = 'contact';
-      }
-
-      setActiveSection(current);
-    };
-
-    updateActiveSection();
-    window.addEventListener('scroll', updateActiveSection, { passive: true });
-    window.addEventListener('resize', updateActiveSection);
-
-    return () => {
-      window.removeEventListener('scroll', updateActiveSection);
-      window.removeEventListener('resize', updateActiveSection);
-    };
+      updateActiveSection();
+      window.addEventListener('scroll', updateActiveSection, { passive: true });
+      window.addEventListener('resize', updateActiveSection);
+      return () => {
+        window.removeEventListener('scroll', updateActiveSection);
+        window.removeEventListener('resize', updateActiveSection);
+      };
+    }
   }, []);
+
+  const isLinkActive = (href: string) => {
+    if (href.startsWith('/#')) {
+      return activeSection === href.split('#')[1];
+    }
+    return activeSection === href.replace(/^\//, '');
+  };
 
   return (
     <motion.header
@@ -64,7 +68,7 @@ export default function Header() {
       <div className="rounded-2xl md:rounded-full border border-border bg-card/80 backdrop-blur-md px-4 py-2.5 md:px-6 md:py-3 shadow-sm">
         <div className="flex items-center justify-between gap-4">
           <a
-            href="#home"
+            href={isHome ? "#home" : "/"}
             className={`text-sm md:text-base font-extrabold tracking-tight transition-colors duration-300 ${
               activeSection === 'home'
                 ? 'text-(--accent-color)'
@@ -81,7 +85,7 @@ export default function Header() {
                 key={item.href}
                 href={item.href}
                 className={`text-xs uppercase tracking-[0.16em] font-semibold transition-colors duration-300 ${
-                  activeSection === item.href.slice(1)
+                  isLinkActive(item.href)
                     ? 'text-(--accent-color)'
                     : 'text-muted-foreground hover:text-foreground'
                 }`}
@@ -133,7 +137,7 @@ export default function Header() {
                   href={item.href}
                   onClick={closeMobileMenu}
                   className={`block rounded-lg px-3 py-2 text-xs uppercase tracking-[0.14em] font-semibold transition-colors duration-300 ${
-                    activeSection === item.href.slice(1)
+                    isLinkActive(item.href)
                       ? 'text-(--accent-color) bg-black/5 dark:bg-white/10'
                       : 'text-muted-foreground hover:text-foreground hover:bg-black/5 dark:hover:bg-white/5'
                   }`}
