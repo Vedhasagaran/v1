@@ -57,7 +57,7 @@ export default function About() {
           </h2>
           <div className="flex flex-col gap-6">
             <p className="text-xl sm:text-2xl font-medium leading-relaxed text-foreground">
-              I spend my time building: sometimes it's <span style={{ color: 'var(--accent-color)' }} className="font-semibold">code</span>, sometimes it's ideas, and sometimes it's just a better version of myself.
+              I spend my time <span style={{ color: 'var(--accent-color)' }} className="font-semibold">building</span>: sometimes it's <span style={{ color: 'var(--accent-color)' }} className="font-semibold">code</span>, sometimes it's <span style={{ color: 'var(--accent-color)' }} className="font-semibold">ideas</span>, and sometimes it's just a <span style={{ color: 'var(--accent-color)' }} className="font-semibold">better version</span> of myself.
             </p>
             {paragraphs.map((para, i) => (
               <motion.p
