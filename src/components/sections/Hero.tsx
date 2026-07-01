@@ -161,7 +161,7 @@ export default function Hero({ skills = [] }: Readonly<HeroProps>) {
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 1.2, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
-            className="relative w-40 h-40 md:w-56 md:h-56 lg:w-72 lg:h-72 rounded-full overflow-hidden shrink-0 md:grayscale md:hover:grayscale-0 transition-all duration-700"
+            className="relative w-40 h-40 md:w-56 md:h-56 lg:w-72 lg:h-72 rounded-full overflow-hidden shrink-0 transition-all duration-700"
           >
             <img
               src={profileImage}
