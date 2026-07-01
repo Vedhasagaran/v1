@@ -1,5 +1,6 @@
 'use client';
 
+import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import type { Skill } from '../utils/skillsData';
 
@@ -8,6 +9,22 @@ interface SkillsProps {
 }
 
 export default function Skills({ skills }: SkillsProps) {
+  const [animationsEnabled, setAnimationsEnabled] = useState(false);
+
+  useEffect(() => {
+    const handleUpdate = () => {
+      const saved = localStorage.getItem('animationsEnabled');
+      setAnimationsEnabled(saved === 'true');
+    };
+    handleUpdate();
+    window.addEventListener('preferences-changed', handleUpdate);
+    return () => window.removeEventListener('preferences-changed', handleUpdate);
+  }, []);
+
+  if (animationsEnabled) {
+    return null;
+  }
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 30 }}

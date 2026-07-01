@@ -78,7 +78,6 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
       }
     </script>
 
-    <!-- Prevent dark mode flash -->
     <script is:inline>
       (function() {
         const savedTheme = localStorage.getItem('theme');
@@ -88,6 +87,28 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
         if (shouldBeDark) {
           document.documentElement.classList.add('dark');
         }
+      })();
+    </script>
+
+    <script is:inline>
+      (function() {
+        let clickHistory = [];
+        document.addEventListener("click", function(event) {
+          const target = event.target;
+          if (!target || target.nodeType !== 1) return;
+          const interactive = target.closest("a, button, [role=button], input, label");
+          if (!interactive) return;
+
+          const now = Date.now();
+          clickHistory.push({ t: now, el: interactive });
+          clickHistory = clickHistory.filter(function(c) { return now - c.t <= 800; });
+
+          const sameEl = clickHistory.filter(function(c) { return c.el === interactive; });
+          if (sameEl.length >= 3) {
+            console.warn("Rage click detected on", interactive);
+            clickHistory = [];
+          }
+        }, { capture: true, passive: true });
       })();
     </script>
 

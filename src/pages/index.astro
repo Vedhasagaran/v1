@@ -1,11 +1,17 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import Providers from '../components/Providers';
+import About from '../components/About';
+import Experience from '../components/Experience';
+import ProjectsList from '../components/ProjectsList';
+import BlogList from '../components/BlogList';
+import Contact from '../components/Contact';
+import Footer from '../components/Footer';
+import Skills from '../components/Skills';
 import { getMediumPosts } from '../utils/mediumFeed';
 import { projects } from '../utils/projectsData';
 import { skills } from '../utils/skillsData';
 
-// Fetch Medium posts
 const mediumPosts = await getMediumPosts('vedhasagaran7', 5);
 ---
 
@@ -14,6 +20,33 @@ const mediumPosts = await getMediumPosts('vedhasagaran7', 5);
   description="Welcome to Vedhasagaran's portfolio. Experienced full stack developer specializing in modern web technologies, Astro, Angular, React, Node.js, C# and innovative user experiences."
   image="/og-image.jpeg"
 >
-  <Providers client:only="react" blogPosts={mediumPosts} projects={projects} skills={skills} />
-  <!-- <ParallaxContainer client:load personal={personal} /> -->
+  <Providers client:only="react" skills={skills} />
+  
+  <div class="flex flex-col items-center justify-center gap-32 w-full px-6 pb-16 mt-16">
+    <div id="about" class="w-full max-w-5xl">
+      <About client:visible />
+    </div>
+
+    <div id="experience" class="w-full max-w-5xl">
+      <Experience client:visible />
+    </div>
+
+    <div id="skills" class="w-full max-w-5xl">
+      <Skills skills={skills} client:visible />
+    </div>
+
+    <div id="projects" class="w-full max-w-5xl">
+      <ProjectsList projects={projects} client:visible />
+    </div>
+
+    <div id="blog" class="w-full max-w-5xl">
+      <BlogList posts={mediumPosts} client:visible />
+    </div>
+
+    <div id="contact" class="w-full max-w-5xl">
+      <Contact client:visible />
+    </div>
+  </div>
+
+  <Footer />
 </Layout>

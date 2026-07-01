@@ -5,18 +5,15 @@ import { ThemeProvider } from '../context/ThemeContext';
 import CursorWrapper from './CursorWrapper';
 import Header from './Header';
 import Hero from './Hero';
-import Footer from './Footer';
 import FeedbackBalloons from './FeedbackBalloons';
 import ScrollProgress from './ScrollProgress';
 import BackToTop from './BackToTop';
 
 interface ProvidersProps {
-  blogPosts: any[];
-  projects: any[];
   skills: any[];
 }
 
-export default function Providers({ blogPosts, projects, skills }: Readonly<ProvidersProps>) {
+export default function Providers({ skills }: Readonly<ProvidersProps>) {
   return (
     <PreferencesProvider>
       <ThemeProvider>
@@ -28,8 +25,7 @@ export default function Providers({ blogPosts, projects, skills }: Readonly<Prov
         <h1 style={{ position: 'absolute', width: '1px', height: '1px', padding: 0, margin: '-1px', overflow: 'hidden', clip: 'rect(0, 0, 0, 0)', whiteSpace: 'nowrap', border: 0 }}>
           Vedhasagaran - Full Stack Developer Portfolio
         </h1>
-        <Hero blogPosts={blogPosts} projects={projects} skills={skills} />
-        <Footer />
+        <Hero skills={skills} />
       </ThemeProvider>
     </PreferencesProvider>
   );

@@ -1,17 +1,25 @@
 @import "tailwindcss";
 
-@theme {
-  --color-scheme: light dark;
-  --font-sans: "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
+@font-face {
+  font-family: "Plus Jakarta Sans Fallback";
+  src: local("Arial");
+  size-adjust: 98.5%;
+  ascent-override: 102%;
+  descent-override: 25%;
+  line-gap-override: 0%;
 }
 
-/* Minimalist Variables */
+@theme {
+  --color-scheme: light dark;
+  --font-sans: "Plus Jakarta Sans", "Plus Jakarta Sans Fallback", ui-sans-serif, system-ui, sans-serif;
+}
+
 :root {
-  --foreground: rgb(23, 23, 23); /* neutral-900 */
-  --background: rgb(250, 250, 250); /* neutral-50 */
-  --muted-foreground: rgb(115, 115, 115); /* neutral-500 */
+  --foreground: rgb(23, 23, 23);
+  --background: rgb(250, 250, 250);
+  --muted-foreground: rgb(115, 115, 115);
   --card: rgb(255, 255, 255);
-  --border: rgb(229, 229, 229); /* neutral-200 */
+  --border: rgb(229, 229, 229);
   --accent-color: oklch(55.27% .195 19.06);
 }
 
@@ -22,9 +30,7 @@ body {
   transition: background-color 0.4s ease, color 0.4s ease;
   width: 100%;
   min-height: 100vh;
-  /* Prevent bounce for clean aesthetic */
   overscroll-behavior: none;
-  /* Lenis smooth scrolling requirement */
   margin: 0;
 }
 

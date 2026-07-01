@@ -32,6 +32,7 @@ export function PreferencesProvider({ children }: Readonly<{ children: ReactNode
     setAnimationsEnabled(prev => {
       const newValue = !prev;
       localStorage.setItem('animationsEnabled', String(newValue));
+      window.dispatchEvent(new Event('preferences-changed'));
       return newValue;
     });
   }, []);
