@@ -3,6 +3,8 @@ export interface Project {
   description: string;
   link: string;
   tags: string[];
+  image?: string;
+  objectFit?: 'cover' | 'contain';
   stats?: {
     label: string;
     value: string;
@@ -16,6 +18,20 @@ export const projects: Project[] = [
       "A collaborative task management application featuring quadrant-based organization, real-time team boards, and detailed task history tracking.",
     link: "https://focus-grid-three.vercel.app/",
     tags: ["React", "TypeScript", "Vite", "Firebase"],
+    image: "/projects/focusgrid.png",
+    stats: {
+      label: "Status",
+      value: "Live",
+    },
+  },
+  {
+    title: "RewardRally",
+    description:
+      "An Agentic AI loyalty program that autonomously analyzes customer behavior, predicts intent, and executes personalized retention campaigns in real time.",
+    link: "https://www.rewardrally.in/",
+    tags: ["Node.js","DotNet", "React", "TypeScript", "AI"],
+    image: "/projects/rewardrally.png",
+    objectFit: "contain",
     stats: {
       label: "Status",
       value: "Live",
@@ -27,6 +43,7 @@ export const projects: Project[] = [
       "A specialized typing practice application for developers, featuring context-specific categories like AI prompts and code snippets to improve typing speed and accuracy.",
     link: "https://devtype-tau.vercel.app/",
     tags: ["Html", "Css", "Javascript", "Vite"],
+    image: "/projects/devtype.png",
     stats: {
       label: "Status",
       value: "Live",
