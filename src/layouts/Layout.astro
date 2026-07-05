@@ -50,9 +50,8 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 
     <meta name="google-site-verification" content="CePmeqytrkzWb20MT71VJuqPLlP8Bsn9xUK5cB4CTKQ" />
 
-    <!-- Favicon -->
-    <link rel="icon" type="image/svg+xml" href="/favicon.jpeg" />
-    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="icon" type="image/jpeg" href="/logo-light.jpg" />
+    <link rel="apple-touch-icon" href="/logo-light.jpg" />
 
     <!-- Preload critical images -->
     <link rel="preload" as="image" href="/VedhaProfile.jpeg" />
@@ -85,6 +84,15 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 
         if (shouldBeDark) {
           document.documentElement.classList.add('dark');
+        }
+
+        const favicon = document.querySelector('link[rel="icon"]');
+        if (favicon) {
+          favicon.setAttribute('href', shouldBeDark ? '/logo-dark.jpg' : '/logo-light.jpg');
+        }
+        const appleIcon = document.querySelector('link[rel="apple-touch-icon"]');
+        if (appleIcon) {
+          appleIcon.setAttribute('href', shouldBeDark ? '/logo-dark.jpg' : '/logo-light.jpg');
         }
       })();
     </script>

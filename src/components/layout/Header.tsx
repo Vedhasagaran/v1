@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
+import { useTheme } from '@/contexts/ThemeContext';
 
 const navItems = [
   { label: 'About', href: '/#about' },
@@ -12,6 +13,7 @@ const navItems = [
 ];
 
 export default function Header() {
+  const { isDark } = useTheme();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState('home');
   const [isHome, setIsHome] = useState(true);
@@ -69,14 +71,24 @@ export default function Header() {
         <div className="flex items-center justify-between gap-4">
           <a
             href={isHome ? "#home" : "/"}
-            className={`text-sm md:text-base font-extrabold tracking-tight transition-colors duration-300 ${
+            className="group flex items-center gap-2.5 text-sm md:text-base font-extrabold tracking-tight"
+            onClick={closeMobileMenu}
+          >
+            <div className="logo-shine-container h-6 w-6 md:h-7 md:w-7 rounded-lg">
+              <img
+                src={isDark ? "/logo-dark.jpg" : "/logo-light.jpg"}
+                alt="Logo"
+                className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+              />
+              <div className="logo-shine-effect" />
+            </div>
+            <span className={`transition-colors duration-300 ${
               activeSection === 'home'
                 ? 'text-(--accent-color)'
                 : 'text-foreground hover:text-(--accent-color)'
-            }`}
-            onClick={closeMobileMenu}
-          >
-            Vedhasagaran
+            }`}>
+              Vedhasagaran
+            </span>
           </a>
 
           <nav aria-label="Primary" className="hidden md:flex items-center gap-5">

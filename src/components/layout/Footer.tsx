@@ -56,9 +56,24 @@ export default function Footer() {
           <div className="md:col-span-6 flex flex-col gap-6">
             <a
               href="/"
-              className="text-lg font-bold tracking-tight text-foreground hover:text-(--accent-color) transition-colors duration-300 w-fit"
+              className="group flex items-center gap-2.5 text-lg font-bold tracking-tight w-fit"
             >
-              Vedhasagaran
+              <div className="logo-shine-container h-7 w-7 rounded-lg">
+                <img
+                  src="/logo-light.jpg"
+                  alt="Logo"
+                  className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105 dark:hidden"
+                />
+                <img
+                  src="/logo-dark.jpg"
+                  alt="Logo"
+                  className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105 hidden dark:block"
+                />
+                <div className="logo-shine-effect" />
+              </div>
+              <span className="text-foreground hover:text-(--accent-color) transition-colors duration-300">
+                Vedhasagaran
+              </span>
             </a>
             <p className="text-sm leading-relaxed text-muted-foreground max-w-sm font-light">
               Software Development Engineer. Crafting modern, high-performance systems and interactive user experiences.

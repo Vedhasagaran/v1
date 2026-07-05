@@ -13,8 +13,20 @@ const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 export function ThemeProvider({ children }: { children: ReactNode }) {
   const [isDark, setIsDark] = useState(false);
 
+  const updateFavicon = (isDarkTheme: boolean) => {
+    if (typeof window !== 'undefined') {
+      const favicon = document.querySelector('link[rel="icon"]');
+      if (favicon) {
+        favicon.setAttribute('href', isDarkTheme ? '/logo-dark.jpg' : '/logo-light.jpg');
+      }
+      const appleIcon = document.querySelector('link[rel="apple-touch-icon"]');
+      if (appleIcon) {
+        appleIcon.setAttribute('href', isDarkTheme ? '/logo-dark.jpg' : '/logo-light.jpg');
+      }
+    }
+  };
+
   useEffect(() => {
-    // Check localStorage or system preference
     const savedTheme = localStorage.getItem('theme');
     const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
 
@@ -24,6 +36,7 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
     if (shouldBeDark) {
       document.documentElement.classList.add('dark');
     }
+    updateFavicon(shouldBeDark);
   }, []);
 
   const toggleTheme = () => {
@@ -36,6 +49,7 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
         document.documentElement.classList.remove('dark');
         localStorage.setItem('theme', 'light');
       }
+      updateFavicon(newValue);
       return newValue;
     });
   };
