@@ -52,8 +52,8 @@ export default function Footer() {
   return (
     <footer className="w-full pt-20 pb-8 px-6 border-t border-border bg-transparent mt-16">
       <div className="max-w-6xl mx-auto flex flex-col gap-12">
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-12">
-          <div className="md:col-span-6 flex flex-col gap-6">
+        <div className="grid grid-cols-2 md:grid-cols-12 gap-8 md:gap-12">
+          <div className="col-span-2 md:col-span-6 flex flex-col gap-6">
             <a
               href="/"
               className="group flex items-center gap-2.5 text-lg font-bold tracking-tight w-fit"
@@ -94,7 +94,7 @@ export default function Footer() {
             </div>
           </div>
 
-          <div className="md:col-span-3 flex flex-col gap-4">
+          <div className="col-span-1 md:col-span-3 flex flex-col gap-4">
             <h4 className="text-xs font-mono uppercase tracking-[0.2em] text-muted-foreground">
               Navigate
             </h4>
@@ -112,7 +112,7 @@ export default function Footer() {
             </ul>
           </div>
 
-          <div className="md:col-span-3 flex flex-col gap-4">
+          <div className="col-span-1 md:col-span-3 flex flex-col gap-4">
             <h4 className="text-xs font-mono uppercase tracking-[0.2em] text-muted-foreground">
               Connect
             </h4>

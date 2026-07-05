@@ -1,12 +1,22 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
+import { motion, type Variants } from 'framer-motion';
 import type { Skill } from '@/data/skillsData';
 
 interface SkillsProps {
   skills: Skill[];
 }
+
+const containerVariants: Variants = {
+  hidden: {},
+  visible: { transition: { staggerChildren: 0.05 } },
+};
+
+const itemVariants: Variants = {
+  hidden: { opacity: 0, scale: 0.9 },
+  visible: { opacity: 1, scale: 1, transition: { duration: 0.5, ease: [0.16, 1, 0.3, 1] as [number, number, number, number] } },
+};
 
 export default function Skills({ skills }: SkillsProps) {
   const [animationsEnabled, setAnimationsEnabled] = useState(false);
@@ -26,28 +36,31 @@ export default function Skills({ skills }: SkillsProps) {
   }
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 30 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-50px" }}
-      transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
-      className="w-full"
-    >
-      <h2 className="text-4xl md:text-5xl font-extrabold tracking-tighter mb-16 text-center text-foreground">
+    <div className="w-full">
+      <motion.h2
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: "-50px" }}
+        transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+        className="text-4xl md:text-5xl font-extrabold tracking-tighter mb-16 text-center text-foreground"
+      >
         Tooling
-      </h2>
-      <div className="flex flex-wrap gap-8 md:gap-12 justify-center max-w-4xl mx-auto">
-        {skills.map((skill, index) => (
+      </motion.h2>
+      <motion.div
+        variants={containerVariants}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, margin: "-50px" }}
+        className="flex flex-wrap gap-8 md:gap-12 justify-center max-w-4xl mx-auto"
+      >
+        {skills.map((skill) => (
           <div
             key={skill.name}
             className="group cursor-pointer flex flex-col items-center gap-4"
             title={skill.name}
           >
             <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: index * 0.05, ease: [0.16, 1, 0.3, 1] }}
+              variants={itemVariants}
               className="w-16 h-16 md:w-20 md:h-20 flex bg-transparent items-center justify-center md:grayscale md:opacity-50 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-500"
             >
               <img
@@ -61,7 +74,7 @@ export default function Skills({ skills }: SkillsProps) {
             </span>
           </div>
         ))}
-      </div>
-    </motion.div>
+      </motion.div>
+    </div>
   );
 }

@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence, type Variants } from 'framer-motion';
 import type { Project } from '@/data/projectsData';
 
 interface ProjectsListProps {
@@ -20,7 +20,17 @@ function getProjectMetaText(stats: Project['stats']) {
   return `${stats.label} ${stats.value}`;
 }
 
-function ProjectCard({ project, index }: Readonly<{ project: Project; index: number }>) {
+const containerVariants: Variants = {
+  hidden: {},
+  visible: { transition: { staggerChildren: 0.08 } },
+};
+
+const cardVariants: Variants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] as [number, number, number, number] } },
+};
+
+function ProjectCard({ project }: Readonly<{ project: Project }>) {
   const [isExpanded, setIsExpanded] = useState(false);
 
   const toggleExpand = (e: React.MouseEvent) => {
@@ -34,10 +44,7 @@ function ProjectCard({ project, index }: Readonly<{ project: Project; index: num
       href={project.link}
       target="_blank"
       rel="noopener noreferrer"
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: '-50px' }}
-      transition={{ duration: 0.7, delay: index * 0.08, ease: [0.16, 1, 0.3, 1] }}
+      variants={cardVariants}
       className="group flex flex-col h-full bg-[var(--card)] border border-border rounded-2xl overflow-hidden shadow-sm hover:shadow-md hover:border-(--accent-color)/50 hover:-translate-y-1 transition-all duration-300"
     >
       <div className={`relative aspect-video w-full overflow-hidden border-b border-border flex items-center justify-center transition-colors duration-300 ${
@@ -115,22 +122,28 @@ function ProjectCard({ project, index }: Readonly<{ project: Project; index: num
 
 export default function ProjectsList({ projects }: Readonly<ProjectsListProps>) {
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 30 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-50px" }}
-      transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
-      className="w-full"
-    >
-      <h2 className="section-title text-4xl md:text-5xl font-extrabold tracking-tighter mb-12 text-foreground">
+    <div className="w-full">
+      <motion.h2
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: "-50px" }}
+        transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+        className="section-title text-4xl md:text-5xl font-extrabold tracking-tighter mb-12 text-foreground"
+      >
         Projects
-      </h2>
+      </motion.h2>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 w-full">
-        {projects.map((project, index) => (
-          <ProjectCard key={project.title} project={project} index={index} />
+      <motion.div
+        variants={containerVariants}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, margin: "-50px" }}
+        className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 w-full"
+      >
+        {projects.map((project) => (
+          <ProjectCard key={project.title} project={project} />
         ))}
-      </div>
-    </motion.div>
+      </motion.div>
+    </div>
   );
 }
