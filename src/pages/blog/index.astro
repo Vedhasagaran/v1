@@ -29,12 +29,28 @@ const posts = (await getCollection('blog'))
     </a>
 
     <header class="mb-12">
-      <h1 class="text-4xl md:text-5xl font-extrabold tracking-tighter text-foreground mb-4">
-        Writing
-      </h1>
-      <p class="text-base md:text-lg text-muted-foreground font-light">
-        Thoughts, guides, and insights on code, architecture, and technology.
-      </p>
+      <div class="flex flex-col md:flex-row md:items-end justify-between gap-4">
+        <div>
+          <h1 class="text-4xl md:text-5xl font-extrabold tracking-tighter text-foreground mb-4">
+            Writing
+          </h1>
+          <p class="text-base md:text-lg text-muted-foreground font-light">
+            Thoughts, guides, and insights on code, architecture, and technology.
+          </p>
+        </div>
+        <a
+          href="/rss.xml"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-border bg-card/50 text-xs font-semibold uppercase tracking-widest text-muted-foreground hover:text-[var(--accent-color)] hover:border-[var(--accent-color)] transition-all duration-300 w-fit"
+          title="Subscribe to RSS Feed"
+        >
+          <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M4 11a1 1 0 0 1 1 1c0 3.86 3.14 7 7 7a1 1 0 1 1 0 2c-4.97 0-9-4.03-9-9a1 1 0 0 1 1-1zm0-5a1 1 0 0 1 1 1c0 6.627 5.373 12 12 12a1 1 0 1 1 0 2C9.163 21 3 14.837 3 7a1 1 0 0 1 1-1zm0-5a1 1 0 0 1 1 1c0 9.39 7.61 17 17 17a1 1 0 1 1 0 2C8.944 21 3 15.056 3 3a1 1 0 0 1 1-1z"/>
+          </svg>
+          RSS Feed
+        </a>
+      </div>
     </header>
 
     <BlogSearch client:load posts={posts} />
