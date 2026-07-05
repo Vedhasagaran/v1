@@ -6,7 +6,7 @@ import { usePreferences } from '@/contexts/PreferencesContext';
 
 export default function Settings() {
   const [isOpen, setIsOpen] = useState(false);
-  const { animationsEnabled, toggleAnimations, cursorEnabled, toggleCursor } = usePreferences();
+  const { cursorEnabled, toggleCursor } = usePreferences();
 
   return (
     <>
@@ -63,26 +63,6 @@ export default function Settings() {
               </h3>
 
               <div className="space-y-4">
-                {/* Animations Toggle */}
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-sm font-medium text-foreground">Skill Animations</p>
-                    <p className="text-xs text-muted-foreground">Enable motion effects</p>
-                  </div>
-                  <button
-                    onClick={toggleAnimations}
-                    className={`relative w-12 h-6 rounded-full transition-colors duration-300 ${
-                      animationsEnabled ? 'bg-[var(--accent-color)]' : 'bg-border'
-                    }`}
-                    aria-label="Toggle skill animations"
-                  >
-                    <motion.div
-                      className="absolute top-1 left-1 w-4 h-4 bg-white rounded-full"
-                      animate={{ x: animationsEnabled ? 24 : 0 }}
-                      transition={{ duration: 0.2 }}
-                    />
-                  </button>
-                </div>
 
                 {/* Cursor Effect Toggle */}
                 <div className="flex items-center justify-between">

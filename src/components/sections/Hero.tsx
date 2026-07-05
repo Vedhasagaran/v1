@@ -3,7 +3,6 @@
 import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { names, languageIndicators, role, company, profileImage, socialLinks } from "@/data/heroData";
-import SkillsGravity from "@/components/effects/SkillsGravity";
 import { usePreferences } from "@/contexts/PreferencesContext";
 import ParticlesBackground from "@/components/effects/ParticlesBackground";
 import type { Skill } from "@/data/skillsData";
@@ -16,7 +15,7 @@ export default function Hero({ skills = [] }: Readonly<HeroProps>) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [displayedLanguageIndex, setDisplayedLanguageIndex] = useState(0);
   const profileImageRef = useRef<HTMLDivElement>(null);
-  const { animationsEnabled, cursorEnabled } = usePreferences();
+  const { cursorEnabled } = usePreferences();
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -38,7 +37,6 @@ export default function Hero({ skills = [] }: Readonly<HeroProps>) {
 
   return (
     <div className="w-full">
-      {animationsEnabled && skills.length > 0 && <SkillsGravity skills={skills} targetRef={profileImageRef} />}
 
       <div id="home" className="relative overflow-hidden flex items-center justify-center min-h-[85vh] w-full px-6 pt-28 pb-12">
         {!cursorEnabled && <ParticlesBackground scopedToContainer />}

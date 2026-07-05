@@ -3,8 +3,6 @@
 import { createContext, useContext, useState, useEffect, useCallback, useMemo, type ReactNode } from 'react';
 
 interface PreferencesContextType {
-  animationsEnabled: boolean;
-  toggleAnimations: () => void;
   cursorEnabled: boolean;
   toggleCursor: () => void;
 }
@@ -12,29 +10,14 @@ interface PreferencesContextType {
 const PreferencesContext = createContext<PreferencesContextType | undefined>(undefined);
 
 export function PreferencesProvider({ children }: Readonly<{ children: ReactNode }>) {
-  const [animationsEnabled, setAnimationsEnabled] = useState(false);
   const [cursorEnabled, setCursorEnabled] = useState(true);
 
   useEffect(() => {
-    // Load preferences from localStorage
-    const savedAnimations = localStorage.getItem('animationsEnabled');
     const savedCursor = localStorage.getItem('cursorEnabled');
 
-    if (savedAnimations !== null) {
-      setAnimationsEnabled(savedAnimations === 'true');
-    }
     if (savedCursor !== null) {
       setCursorEnabled(savedCursor === 'true');
     }
-  }, []);
-
-  const toggleAnimations = useCallback(() => {
-    setAnimationsEnabled(prev => {
-      const newValue = !prev;
-      localStorage.setItem('animationsEnabled', String(newValue));
-      window.dispatchEvent(new Event('preferences-changed'));
-      return newValue;
-    });
   }, []);
 
   const toggleCursor = useCallback(() => {
@@ -46,8 +29,8 @@ export function PreferencesProvider({ children }: Readonly<{ children: ReactNode
   }, []);
 
   const contextValue = useMemo(
-    () => ({ animationsEnabled, toggleAnimations, cursorEnabled, toggleCursor }),
-    [animationsEnabled, toggleAnimations, cursorEnabled, toggleCursor],
+    () => ({ cursorEnabled, toggleCursor }),
+    [cursorEnabled, toggleCursor],
   );
 
   return (

@@ -1,6 +1,5 @@
 'use client';
 
-import { useState, useEffect } from 'react';
 import { motion, type Variants } from 'framer-motion';
 import type { Skill } from '@/data/skillsData';
 
@@ -19,21 +18,6 @@ const itemVariants: Variants = {
 };
 
 export default function Skills({ skills }: SkillsProps) {
-  const [animationsEnabled, setAnimationsEnabled] = useState(false);
-
-  useEffect(() => {
-    const handleUpdate = () => {
-      const saved = localStorage.getItem('animationsEnabled');
-      setAnimationsEnabled(saved === 'true');
-    };
-    handleUpdate();
-    window.addEventListener('preferences-changed', handleUpdate);
-    return () => window.removeEventListener('preferences-changed', handleUpdate);
-  }, []);
-
-  if (animationsEnabled) {
-    return null;
-  }
 
   return (
     <div className="w-full">
