@@ -15,7 +15,7 @@ const { title, description, pubDate, tags, readTime } = Astro.props;
 ---
 
 <Layout title={title} description={description}>
-  <Providers client:only="react" skills={[]} />
+  <Providers client:load skills={[]} />
   
   <div id="progress-bar-container" class="fixed top-0 left-0 w-full h-1 bg-transparent z-[100]">
     <div id="progress-bar" class="h-full bg-[var(--accent-color)] w-0 transition-all duration-75"></div>

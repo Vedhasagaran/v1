@@ -11,7 +11,7 @@ import { skills } from '@/data/skillsData';
   title="Experience - Vedhasagaran"
   description="Learn about Vedhasagaran's professional work history, skills, and engineering experience."
 >
-  <Providers client:only="react" skills={skills} />
+  <Providers client:load skills={skills} />
 
   <div class="max-w-4xl mx-auto px-6 pt-36 pb-16 flex flex-col gap-24 items-center justify-center w-full">
     <div class="w-full">

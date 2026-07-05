@@ -27,7 +27,8 @@ export default function About() {
               src="/VedhaProfile.jpeg"
               alt="Vedhasagaran Mahalingam"
               className="w-full object-cover aspect-[4/5] transform group-hover:scale-105 transition-transform duration-700"
-              loading="lazy"
+              loading="eager"
+              {...{ fetchPriority: "high" }}
             />
           </div>
 

@@ -11,7 +11,7 @@ import { skills } from '@/data/skillsData';
   description="Welcome to Vedhasagaran's portfolio. Experienced full stack developer specializing in modern web technologies, Astro, Angular, React, Node.js, C# and innovative user experiences."
   image="/og-image.jpeg"
 >
-  <Providers client:only="react" skills={skills} showHero={true} />
+  <Providers client:load skills={skills} showHero={true} />
   
   <div class="flex flex-col items-center justify-center gap-32 w-full px-6 pb-16 pt-36">
     <div id="about" class="w-full max-w-5xl">
