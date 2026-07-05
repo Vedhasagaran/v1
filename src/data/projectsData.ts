@@ -1,3 +1,5 @@
+import { ASSETS } from './assets';
+
 export interface Project {
   title: string;
   description: string;
@@ -18,7 +20,7 @@ export const projects: Project[] = [
       "A collaborative task management application featuring quadrant-based organization, real-time team boards, and detailed task history tracking.",
     link: "https://focus-grid-three.vercel.app/",
     tags: ["React", "TypeScript", "Vite", "Firebase"],
-    image: "/projects/focusgrid.png",
+    image: ASSETS.projects.focusGrid,
     stats: {
       label: "Status",
       value: "Live",
@@ -30,7 +32,7 @@ export const projects: Project[] = [
       "An Agentic AI loyalty program that autonomously analyzes customer behavior, predicts intent, and executes personalized retention campaigns in real time.",
     link: "https://www.rewardrally.in/",
     tags: ["Node.js","DotNet", "React", "TypeScript", "AI"],
-    image: "/projects/rewardrally.png",
+    image: ASSETS.projects.rewardRally,
     objectFit: "contain",
     stats: {
       label: "Status",
@@ -43,7 +45,7 @@ export const projects: Project[] = [
       "A specialized typing practice application for developers, featuring context-specific categories like AI prompts and code snippets to improve typing speed and accuracy.",
     link: "https://devtype-tau.vercel.app/",
     tags: ["Html", "Css", "Javascript", "Vite"],
-    image: "/projects/devtype.png",
+    image: ASSETS.projects.devType,
     stats: {
       label: "Status",
       value: "Live",

@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useTheme } from '@/contexts/ThemeContext';
 import ThemeToggle from '@/components/settings/ThemeToggle';
+import { ASSETS } from '@/data/assets';
 
 const navItems = [
   { label: 'About', href: '/#about' },
@@ -77,7 +78,7 @@ export default function Header() {
           >
             <div className="logo-shine-container h-6 w-6 md:h-7 md:w-7 rounded-lg">
               <img
-                src={isDark ? "/logo-dark.jpg" : "/logo-light.jpg"}
+                src={isDark ? ASSETS.logos.dark : ASSETS.logos.light}
                 alt="Logo"
                 className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
               />

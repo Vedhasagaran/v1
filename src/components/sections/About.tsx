@@ -1,6 +1,7 @@
 'use client';
 
 import { motion } from 'framer-motion';
+import { ASSETS } from '@/data/assets';
 
 const paragraphs = [
   "I'm someone who enjoys understanding things, not just how they work, but why they exist in the first place.",
@@ -24,7 +25,7 @@ export default function About() {
         <div className="md:col-span-5 md:sticky md:top-28 flex flex-col gap-6">
           <div className="relative group overflow-hidden rounded-2xl border border-border shadow-lg">
             <img
-              src="/VedhaProfile.jpeg"
+              src={ASSETS.profile}
               alt="Vedhasagaran Mahalingam"
               className="w-full object-cover aspect-[4/5] transform group-hover:scale-105 transition-transform duration-700"
               loading="eager"

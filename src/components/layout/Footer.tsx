@@ -1,5 +1,7 @@
 'use client';
 
+import { ASSETS } from '@/data/assets';
+
 export default function Footer() {
   const currentYear = new Date().getFullYear();
 
@@ -60,12 +62,12 @@ export default function Footer() {
             >
               <div className="logo-shine-container h-7 w-7 rounded-lg">
                 <img
-                  src="/logo-light.jpg"
+                  src={ASSETS.logos.light}
                   alt="Logo"
                   className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105 dark:hidden"
                 />
                 <img
-                  src="/logo-dark.jpg"
+                  src={ASSETS.logos.dark}
                   alt="Logo"
                   className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105 hidden dark:block"
                 />

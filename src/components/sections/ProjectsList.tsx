@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { motion, AnimatePresence, type Variants } from 'framer-motion';
 import type { Project } from '@/data/projectsData';
+import { ASSETS } from '@/data/assets';
 
 interface ProjectsListProps {
   projects: Project[];
@@ -51,7 +52,7 @@ function ProjectCard({ project }: Readonly<{ project: Project }>) {
         project.objectFit === 'contain' ? 'bg-white' : 'bg-neutral-900/5 dark:bg-white/5'
       }`}>
         <img
-          src={project.image ?? "/projects/default-cover.png"}
+          src={project.image ?? ASSETS.projects.defaultCover}
           alt={project.title}
           className={`transform group-hover:scale-105 transition-transform duration-500 ${
             project.objectFit === 'contain' 

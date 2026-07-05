@@ -1,3 +1,5 @@
+import { ASSETS } from "./assets";
+
 export const names = [
   {
     words: [
@@ -62,7 +64,7 @@ export const languageIndicators = [
 
 export const role = "Software Development Engineer";
 export const company = "PRO";
-export const profileImage = "/VedhaProfile.jpeg"; // Add your image to public folder
+export const profileImage = ASSETS.profile;
 
 export const socialLinks = [
   {

@@ -1,5 +1,6 @@
 ---
 import { ClientRouter } from 'astro:transitions';
+import { ASSETS } from '@/data/assets';
 import '../styles/global.css';
 
 export interface Props {
@@ -7,16 +8,21 @@ export interface Props {
   description?: string;
   image?: string;
   url?: string;
+  type?: 'website' | 'article';
+  pubDate?: Date;
 }
 
 const {
   title,
   description = "Vedhasagaran's Portfolio - Full Stack Developer & Software Engineer. Explore my projects, skills, and experience in web development.",
-  image = "/og-image.jpeg",
-  url = Astro.url.href
+  image = ASSETS.ogImage,
+  url = Astro.url.href,
+  type = 'website',
+  pubDate
 } = Astro.props;
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+const isHome = Astro.url.pathname === '/';
 ---
 
 <!doctype html>
@@ -34,7 +40,7 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
     <link rel="canonical" href={canonicalURL} />
 
     <!-- Open Graph / Facebook -->
-    <meta property="og:type" content="website" />
+    <meta property="og:type" content={type} />
     <meta property="og:url" content={url} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
@@ -50,33 +56,61 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 
     <meta name="google-site-verification" content="CePmeqytrkzWb20MT71VJuqPLlP8Bsn9xUK5cB4CTKQ" />
 
-    <link rel="icon" type="image/jpeg" href="/logo-light.jpg" />
-    <link rel="apple-touch-icon" href="/logo-light.jpg" />
+    <link rel="icon" type="image/jpeg" href={ASSETS.logos.light} />
+    <link rel="apple-touch-icon" href={ASSETS.logos.light} />
 
     <!-- Preload critical images -->
-    <link rel="preload" as="image" href="/VedhaProfile.jpeg" />
+    {isHome && <link rel="preload" as="image" href={ASSETS.profile} />}
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
     <!-- JSON-LD Structured Data -->
-    <script type="application/ld+json" set:html={JSON.stringify({
-      "@context": "https://schema.org",
-      "@type": "Person",
-      "name": "Vedhasagaran Mahalingam",
-      "url": url,
-      "jobTitle": "Software Development Engineer",
-      "description": "Software Development Engineer at PRO specializing in full stack development with expertise in C#, Node.js, Angular, React, and database technologies.",
-      "knowsAbout": ["Full Stack Development", "C#", "Node.js", "Angular", "React", "SQL", "MongoDB", "Redis", "Web Development", "Software Engineering"],
-      "worksFor": {
-        "@type": "Organization",
-        "name": "PRO"
-      },
-      "sameAs": ["https://www.linkedin.com/in/vedhasagaran-m/"]
-    })} />
+    {type === 'article' ? (
+      <script type="application/ld+json" set:html={JSON.stringify({
+        "@context": "https://schema.org",
+        "@type": "BlogPosting",
+        "headline": title,
+        "description": description,
+        "image": new URL(image, Astro.site).href,
+        "datePublished": pubDate ? pubDate.toISOString() : undefined,
+        "author": {
+          "@type": "Person",
+          "name": "Vedhasagaran Mahalingam",
+          "url": Astro.site ? Astro.site.href : url
+        },
+        "publisher": {
+          "@type": "Organization",
+          "name": "Vedhasagaran's Portfolio",
+          "logo": {
+            "@type": "ImageObject",
+            "url": new URL(ASSETS.logos.light, Astro.site).href
+          }
+        },
+        "mainEntityOfPage": {
+          "@type": "WebPage",
+          "@id": canonicalURL.href
+        }
+      })} />
+    ) : (
+      <script type="application/ld+json" set:html={JSON.stringify({
+        "@context": "https://schema.org",
+        "@type": "Person",
+        "name": "Vedhasagaran Mahalingam",
+        "url": url,
+        "jobTitle": "Software Development Engineer",
+        "description": "Software Development Engineer at PRO specializing in full stack development with expertise in C#, Node.js, Angular, React, and database technologies.",
+        "knowsAbout": ["Full Stack Development", "C#", "Node.js", "Angular", "React", "SQL", "MongoDB", "Redis", "Web Development", "Software Engineering"],
+        "worksFor": {
+          "@type": "Organization",
+          "name": "PRO"
+        },
+        "sameAs": ["https://www.linkedin.com/in/vedhasagaran-m/"]
+      })} />
+    )}
 
-    <script is:inline>
+    <script is:inline define:vars={{ darkLogo: ASSETS.logos.dark, lightLogo: ASSETS.logos.light }}>
       (function() {
         const savedTheme = localStorage.getItem('theme');
         const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
@@ -88,11 +122,11 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 
         const favicon = document.querySelector('link[rel="icon"]');
         if (favicon) {
-          favicon.setAttribute('href', shouldBeDark ? '/logo-dark.jpg' : '/logo-light.jpg');
+          favicon.setAttribute('href', shouldBeDark ? darkLogo : lightLogo);
         }
         const appleIcon = document.querySelector('link[rel="apple-touch-icon"]');
         if (appleIcon) {
-          appleIcon.setAttribute('href', shouldBeDark ? '/logo-dark.jpg' : '/logo-light.jpg');
+          appleIcon.setAttribute('href', shouldBeDark ? darkLogo : lightLogo);
         }
       })();
 
@@ -108,11 +142,11 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 
         const favicon = ev.newDocument.querySelector('link[rel="icon"]');
         if (favicon) {
-          favicon.setAttribute('href', shouldBeDark ? '/logo-dark.jpg' : '/logo-light.jpg');
+          favicon.setAttribute('href', shouldBeDark ? darkLogo : lightLogo);
         }
         const appleIcon = ev.newDocument.querySelector('link[rel="apple-touch-icon"]');
         if (appleIcon) {
-          appleIcon.setAttribute('href', shouldBeDark ? '/logo-dark.jpg' : '/logo-light.jpg');
+          appleIcon.setAttribute('href', shouldBeDark ? darkLogo : lightLogo);
         }
       });
     </script>

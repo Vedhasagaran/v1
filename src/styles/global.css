@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@plugin "@tailwindcss/typography";
 
 @font-face {
   font-family: "Plus Jakarta Sans Fallback";
@@ -183,3 +184,12 @@ html.lenis, html.lenis body {
   }
 }
 
+.prose a {
+  color: var(--accent-color) !important;
+  text-decoration: underline;
+  transition: opacity 0.2s ease;
+}
+
+.prose a:hover {
+  opacity: 0.8;
+}

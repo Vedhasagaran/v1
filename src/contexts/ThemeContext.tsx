@@ -17,11 +17,11 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
     if (typeof window !== 'undefined') {
       const favicon = document.querySelector('link[rel="icon"]');
       if (favicon) {
-        favicon.setAttribute('href', isDarkTheme ? '/logo-dark.jpg' : '/logo-light.jpg');
+        favicon.setAttribute('href', isDarkTheme ? '/assets/images/logo-dark.jpg' : '/assets/images/logo-light.jpg');
       }
       const appleIcon = document.querySelector('link[rel="apple-touch-icon"]');
       if (appleIcon) {
-        appleIcon.setAttribute('href', isDarkTheme ? '/logo-dark.jpg' : '/logo-light.jpg');
+        appleIcon.setAttribute('href', isDarkTheme ? '/assets/images/logo-dark.jpg' : '/assets/images/logo-light.jpg');
       }
     }
   };

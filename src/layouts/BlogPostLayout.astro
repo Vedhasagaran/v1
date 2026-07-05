@@ -14,7 +14,7 @@ export interface Props {
 const { title, description, pubDate, tags, readTime } = Astro.props;
 ---
 
-<Layout title={title} description={description}>
+<Layout title={title} description={description} type="article" pubDate={pubDate}>
   <Providers client:load skills={[]} />
   
   <div id="progress-bar-container" class="fixed top-0 left-0 w-full h-1 bg-transparent z-[100]">
