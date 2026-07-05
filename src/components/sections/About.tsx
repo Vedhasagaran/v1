@@ -28,7 +28,7 @@ export default function About() {
               alt="Vedhasagaran Mahalingam"
               className="w-full object-cover aspect-[4/5] transform group-hover:scale-105 transition-transform duration-700"
               loading="eager"
-              {...{ fetchPriority: "high" }}
+              {...{ fetchpriority: "high" }}
             />
           </div>
 

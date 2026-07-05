@@ -95,6 +95,26 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
           appleIcon.setAttribute('href', shouldBeDark ? '/logo-dark.jpg' : '/logo-light.jpg');
         }
       })();
+
+      document.addEventListener('astro:before-swap', (ev) => {
+        const savedTheme = localStorage.getItem('theme');
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        const shouldBeDark = savedTheme === 'dark' || (!savedTheme && prefersDark);
+        if (shouldBeDark) {
+          ev.newDocument.documentElement.classList.add('dark');
+        } else {
+          ev.newDocument.documentElement.classList.remove('dark');
+        }
+
+        const favicon = ev.newDocument.querySelector('link[rel="icon"]');
+        if (favicon) {
+          favicon.setAttribute('href', shouldBeDark ? '/logo-dark.jpg' : '/logo-light.jpg');
+        }
+        const appleIcon = ev.newDocument.querySelector('link[rel="apple-touch-icon"]');
+        if (appleIcon) {
+          appleIcon.setAttribute('href', shouldBeDark ? '/logo-dark.jpg' : '/logo-light.jpg');
+        }
+      });
     </script>
 
     <script is:inline>

@@ -13,7 +13,7 @@ export default function Settings() {
       {/* Settings Button */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="fixed bottom-6 left-6 z-50 w-12 h-12 rounded-full bg-card border-2 border-border hover:border-[var(--accent-color)] shadow-lg transition-all duration-300 flex items-center justify-center group"
+        className="fixed bottom-6 left-6 z-50 w-12 h-12 rounded-full bg-card border-2 border-border hover:border-[var(--accent-color)] shadow-lg transition-all duration-300 hidden md:flex items-center justify-center group"
         aria-label="Settings"
       >
         <svg
@@ -74,6 +74,7 @@ export default function Settings() {
                     className={`relative w-12 h-6 rounded-full transition-colors duration-300 ${
                       animationsEnabled ? 'bg-[var(--accent-color)]' : 'bg-border'
                     }`}
+                    aria-label="Toggle skill animations"
                   >
                     <motion.div
                       className="absolute top-1 left-1 w-4 h-4 bg-white rounded-full"
@@ -94,6 +95,7 @@ export default function Settings() {
                     className={`relative w-12 h-6 rounded-full transition-colors duration-300 ${
                       cursorEnabled ? 'bg-[var(--accent-color)]' : 'bg-border'
                     }`}
+                    aria-label="Toggle fluid cursor"
                   >
                     <motion.div
                       className="absolute top-1 left-1 w-4 h-4 bg-white rounded-full"

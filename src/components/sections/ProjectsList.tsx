@@ -82,6 +82,8 @@ function ProjectCard({ project }: Readonly<{ project: Project }>) {
             <button
               onClick={toggleExpand}
               className="inline-flex items-center ml-1 text-xs font-semibold text-(--accent-color) hover:underline focus:outline-none focus:ring-0 cursor-pointer"
+              aria-expanded={isExpanded}
+              aria-label={isExpanded ? "Show less description" : "Show more description"}
             >
               {isExpanded ? " Less" : " ..."}
             </button>
