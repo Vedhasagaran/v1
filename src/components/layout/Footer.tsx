@@ -64,12 +64,12 @@ export default function Footer() {
                 <img
                   src={ASSETS.logos.light}
                   alt="Logo"
-                  className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105 dark:hidden"
+                  className="h-full w-full object-contain transition-transform duration-300 group-hover:scale-105 dark:hidden"
                 />
                 <img
                   src={ASSETS.logos.dark}
                   alt="Logo"
-                  className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105 hidden dark:block"
+                  className="h-full w-full object-contain transition-transform duration-300 group-hover:scale-105 hidden dark:block"
                 />
                 <div className="logo-shine-effect" />
               </div>

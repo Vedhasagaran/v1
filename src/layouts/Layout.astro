@@ -56,8 +56,13 @@ const isHome = Astro.url.pathname === '/';
 
     <meta name="google-site-verification" content="CePmeqytrkzWb20MT71VJuqPLlP8Bsn9xUK5cB4CTKQ" />
 
-    <link rel="icon" type="image/jpeg" href={ASSETS.logos.light} />
-    <link rel="apple-touch-icon" href={ASSETS.logos.light} />
+    <link rel="icon" type="image/svg+xml" href={ASSETS.logos.light} />
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/images/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/assets/images/favicon-16x16.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/assets/images/apple-touch-icon.png" />
+    <link rel="mask-icon" href="/assets/images/logo-monochrome.svg" color="#8E0626" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <meta name="theme-color" content="#8E0626" />
 
     <!-- Preload critical images -->
     {isHome && <link rel="preload" as="image" href={ASSETS.profile} />}
@@ -120,13 +125,9 @@ const isHome = Astro.url.pathname === '/';
           document.documentElement.classList.add('dark');
         }
 
-        const favicon = document.querySelector('link[rel="icon"]');
-        if (favicon) {
-          favicon.setAttribute('href', shouldBeDark ? darkLogo : lightLogo);
-        }
-        const appleIcon = document.querySelector('link[rel="apple-touch-icon"]');
-        if (appleIcon) {
-          appleIcon.setAttribute('href', shouldBeDark ? darkLogo : lightLogo);
+        const svgFavicon = document.querySelector('link[rel="icon"][type="image/svg+xml"]');
+        if (svgFavicon) {
+          svgFavicon.setAttribute('href', shouldBeDark ? darkLogo : lightLogo);
         }
       })();
 
@@ -140,13 +141,9 @@ const isHome = Astro.url.pathname === '/';
           ev.newDocument.documentElement.classList.remove('dark');
         }
 
-        const favicon = ev.newDocument.querySelector('link[rel="icon"]');
-        if (favicon) {
-          favicon.setAttribute('href', shouldBeDark ? darkLogo : lightLogo);
-        }
-        const appleIcon = ev.newDocument.querySelector('link[rel="apple-touch-icon"]');
-        if (appleIcon) {
-          appleIcon.setAttribute('href', shouldBeDark ? darkLogo : lightLogo);
+        const svgFavicon = ev.newDocument.querySelector('link[rel="icon"][type="image/svg+xml"]');
+        if (svgFavicon) {
+          svgFavicon.setAttribute('href', shouldBeDark ? darkLogo : lightLogo);
         }
       });
     </script>

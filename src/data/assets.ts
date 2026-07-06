@@ -1,7 +1,7 @@
 export const ASSETS = {
   logos: {
-    light: "/assets/images/logo-light.jpg",
-    dark: "/assets/images/logo-dark.jpg"
+    light: "/assets/images/logo-light.svg",
+    dark: "/assets/images/logo-dark.svg"
   },
   profile: "/assets/images/VedhaProfile.jpeg",
   ogImage: "/assets/images/og-image.jpeg",

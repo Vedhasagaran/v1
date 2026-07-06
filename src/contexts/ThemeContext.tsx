@@ -15,13 +15,9 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
 
   const updateFavicon = (isDarkTheme: boolean) => {
     if (typeof window !== 'undefined') {
-      const favicon = document.querySelector('link[rel="icon"]');
-      if (favicon) {
-        favicon.setAttribute('href', isDarkTheme ? '/assets/images/logo-dark.jpg' : '/assets/images/logo-light.jpg');
-      }
-      const appleIcon = document.querySelector('link[rel="apple-touch-icon"]');
-      if (appleIcon) {
-        appleIcon.setAttribute('href', isDarkTheme ? '/assets/images/logo-dark.jpg' : '/assets/images/logo-light.jpg');
+      const svgFavicon = document.querySelector('link[rel="icon"][type="image/svg+xml"]');
+      if (svgFavicon) {
+        svgFavicon.setAttribute('href', isDarkTheme ? '/assets/images/logo-dark.svg' : '/assets/images/logo-light.svg');
       }
     }
   };
