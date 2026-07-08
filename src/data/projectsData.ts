@@ -15,12 +15,12 @@ export interface Project {
 
 export const projects: Project[] = [
   {
-    title: "FocusGrid",
+    title: "Carousel Studio",
     description:
-      "A collaborative task management application featuring quadrant-based organization, real-time team boards, and detailed task history tracking.",
-    link: "https://focus-grid-three.vercel.app/",
-    tags: ["React", "TypeScript", "Vite", "Firebase"],
-    image: ASSETS.projects.focusGrid,
+      "A professional LinkedIn carousel design tool that enables users to choose templates, customize slides, and export as PDF or PNG without using Figma.",
+    link: "https://carousel-artist-kit.vercel.app/",
+    tags: ["React", "TypeScript", "Tailwind CSS", "Framer Motion"],
+    image: ASSETS.projects.carouselStudio,
     stats: {
       label: "Status",
       value: "Live",
@@ -34,6 +34,18 @@ export const projects: Project[] = [
     tags: ["Node.js","DotNet", "React", "TypeScript", "AI"],
     image: ASSETS.projects.rewardRally,
     objectFit: "contain",
+    stats: {
+      label: "Status",
+      value: "Live",
+    },
+  },
+  {
+    title: "FocusGrid",
+    description:
+      "A collaborative task management application featuring quadrant-based organization, real-time team boards, and detailed task history tracking.",
+    link: "https://focus-grid-three.vercel.app/",
+    tags: ["React", "TypeScript", "Vite", "Firebase"],
+    image: ASSETS.projects.focusGrid,
     stats: {
       label: "Status",
       value: "Live",

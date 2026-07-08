@@ -8,6 +8,7 @@ import Hero from '@/components/sections/Hero';
 import FeedbackBalloons from '@/components/feedback/FeedbackBalloons';
 import ScrollProgress from './ScrollProgress';
 import BackToTop from './BackToTop';
+import AnnouncementBar from './AnnouncementBar';
 
 interface ProvidersProps {
   skills?: any[];
@@ -18,6 +19,7 @@ export default function Providers({ skills = [], showHero = false }: Readonly<Pr
   return (
     <PreferencesProvider>
       <ThemeProvider>
+        <AnnouncementBar />
         <ScrollProgress />
         <BackToTop />
         <Header />

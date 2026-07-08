@@ -12,6 +12,7 @@ export const ASSETS = {
     defaultCover: "/assets/projects/default-cover.png",
     focusGrid: "/assets/projects/focusgrid.png",
     rewardRally: "/assets/projects/rewardrally.png",
-    devType: "/assets/projects/devtype.png"
+    devType: "/assets/projects/devtype.png",
+    carouselStudio: "/assets/projects/carouselstudio.png"
   }
 };

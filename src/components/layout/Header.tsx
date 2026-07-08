@@ -19,8 +19,36 @@ export default function Header() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState('home');
   const [isHome, setIsHome] = useState(true);
+  const [hasAnnouncement, setHasAnnouncement] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
 
   const closeMobileMenu = () => setIsMobileMenuOpen(false);
+
+  useEffect(() => {
+    const checkAnnouncement = () => {
+      const isDismissed = localStorage.getItem('carousel-studio-banner-dismissed') === 'true';
+      setHasAnnouncement(!isDismissed);
+    };
+    checkAnnouncement();
+
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 40);
+    };
+    handleScroll();
+
+    const handleAnnouncementChange = (e: Event) => {
+      const customEvent = e as CustomEvent;
+      setHasAnnouncement(customEvent.detail.visible);
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    window.addEventListener('announcement-state-change', handleAnnouncementChange);
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('announcement-state-change', handleAnnouncementChange);
+    };
+  }, []);
 
   useEffect(() => {
     const pathname = window.location.pathname;
@@ -67,7 +95,11 @@ export default function Header() {
       initial={{ opacity: 0, y: -20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-      className="fixed top-3 md:top-4 left-1/2 -translate-x-1/2 z-40 w-[min(94%,960px)]"
+      className={`fixed left-1/2 -translate-x-1/2 z-40 w-[min(94%,960px)] transition-all duration-300 ${
+        hasAnnouncement && !isScrolled
+          ? 'top-[52px] md:top-[56px]'
+          : 'top-3 md:top-4'
+      }`}
     >
       <div className="rounded-2xl md:rounded-full border border-border bg-card/80 backdrop-blur-md px-4 py-2.5 md:px-6 md:py-3 shadow-sm">
         <div className="flex items-center justify-between gap-4">
