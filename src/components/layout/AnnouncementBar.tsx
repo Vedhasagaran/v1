@@ -7,7 +7,7 @@ export default function AnnouncementBar() {
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
-    const isDismissed = localStorage.getItem('carousel-studio-banner-dismissed') === 'true';
+    const isDismissed = localStorage.getItem('announcement-dismissed') === 'true';
     if (!isDismissed) {
       setIsVisible(true);
       window.dispatchEvent(new CustomEvent('announcement-state-change', { detail: { visible: true } }));
@@ -15,7 +15,7 @@ export default function AnnouncementBar() {
   }, []);
 
   const handleDismiss = () => {
-    localStorage.setItem('carousel-studio-banner-dismissed', 'true');
+    localStorage.setItem('announcement-dismissed', 'true');
     setIsVisible(false);
     window.dispatchEvent(new CustomEvent('announcement-state-change', { detail: { visible: false } }));
   };
@@ -32,10 +32,16 @@ export default function AnnouncementBar() {
         >
           <div className="max-w-7xl mx-auto h-full px-4 flex items-center justify-between gap-4">
             <div className="flex-1 flex items-center justify-center gap-2 text-xs md:text-sm font-semibold tracking-wide">
-              <span className="text-(--accent-color)">🎉</span>
-              <span className="hidden sm:inline">Just Launched:</span>
+              <svg
+                className="w-4 h-4 text-(--accent-color) shrink-0 animate-pulse"
+                fill="currentColor"
+                viewBox="0 0 24 24"
+                aria-hidden="true"
+              >
+                <path d="M12 2l2.4 7.2 7.2 2.4-7.2 2.4-2.4 7.2-2.4-7.2-7.2-2.4 7.2-2.4z" />
+              </svg>
               <span className="font-extrabold text-(--accent-color)">Carousel Studio</span>
-              <span className="text-muted-foreground font-normal hidden md:inline">— Design LinkedIn carousels without opening Figma</span>
+              <span className="text-muted-foreground font-normal hidden sm:inline">— Design LinkedIn carousels</span>
               <a
                 href="https://carousel-artist-kit.vercel.app/"
                 target="_blank"

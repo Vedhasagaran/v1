@@ -1,6 +1,7 @@
 'use client';
 
 import { ASSETS } from '@/data/assets';
+import SocialIcon from '@/components/effects/SocialIcon';
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
@@ -81,18 +82,31 @@ export default function Footer() {
               Software Development Engineer. Crafting modern, high-performance systems and interactive user experiences.
             </p>
             <div className="flex items-center gap-4 mt-2">
-              {socialLinks.map((social) => (
-                <a
-                  key={social.name}
-                  href={social.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="w-10 h-10 rounded-full border border-border flex items-center justify-center text-muted-foreground hover:text-foreground hover:border-foreground hover:scale-105 transition-all duration-300"
-                  title={social.name}
-                >
-                  {social.icon}
-                </a>
-              ))}
+              {socialLinks.map((social) => {
+                const getBrandColor = (name: string) => {
+                  switch (name.toLowerCase()) {
+                    case "linkedin":
+                      return "#0077b5";
+                    case "github":
+                      return "#24292e";
+                    case "medium":
+                      return "#00ab6c";
+                    default:
+                      return undefined;
+                  }
+                };
+
+                return (
+                  <SocialIcon
+                    key={social.name}
+                    href={social.url}
+                    title={social.name}
+                    brandColor={getBrandColor(social.name)}
+                  >
+                    {social.icon}
+                  </SocialIcon>
+                );
+              })}
             </div>
           </div>
 

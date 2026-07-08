@@ -20,32 +20,24 @@ export default function Header() {
   const [activeSection, setActiveSection] = useState('home');
   const [isHome, setIsHome] = useState(true);
   const [hasAnnouncement, setHasAnnouncement] = useState(false);
-  const [isScrolled, setIsScrolled] = useState(false);
 
   const closeMobileMenu = () => setIsMobileMenuOpen(false);
 
   useEffect(() => {
     const checkAnnouncement = () => {
-      const isDismissed = localStorage.getItem('carousel-studio-banner-dismissed') === 'true';
+      const isDismissed = localStorage.getItem('announcement-dismissed') === 'true';
       setHasAnnouncement(!isDismissed);
     };
     checkAnnouncement();
-
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 40);
-    };
-    handleScroll();
 
     const handleAnnouncementChange = (e: Event) => {
       const customEvent = e as CustomEvent;
       setHasAnnouncement(customEvent.detail.visible);
     };
 
-    window.addEventListener('scroll', handleScroll, { passive: true });
     window.addEventListener('announcement-state-change', handleAnnouncementChange);
 
     return () => {
-      window.removeEventListener('scroll', handleScroll);
       window.removeEventListener('announcement-state-change', handleAnnouncementChange);
     };
   }, []);
@@ -96,7 +88,7 @@ export default function Header() {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
       className={`fixed left-1/2 -translate-x-1/2 z-40 w-[min(94%,960px)] transition-all duration-300 ${
-        hasAnnouncement && !isScrolled
+        hasAnnouncement
           ? 'top-[52px] md:top-[56px]'
           : 'top-3 md:top-4'
       }`}
