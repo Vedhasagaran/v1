@@ -1,0 +1,74 @@
+---
+---
+
+<div class="mt-16">
+  <div class="rounded-2xl border border-border bg-[var(--card)] p-6 md:p-10">
+    <h3 class="text-xl md:text-2xl font-extrabold tracking-tighter text-foreground mb-6">
+      Let me know what you think!
+    </h3>
+    <div class="giscus"></div>
+  </div>
+</div>
+
+<script>
+  const IS_DEV = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+
+  function getGiscusTheme() {
+    const isDark = document.documentElement.classList.contains('dark');
+    if (IS_DEV) {
+      return isDark ? 'dark_dimmed' : 'noborder_light';
+    }
+    return `${window.location.origin}/styles/giscus-${isDark ? 'dark' : 'light'}.css`;
+  }
+
+  function loadGiscus() {
+    const container = document.querySelector('.giscus');
+    if (!container) return;
+
+    container.innerHTML = '';
+
+    const script = document.createElement('script');
+    script.src = 'https://giscus.app/client.js';
+    script.setAttribute('data-repo', 'Vedhasagaran/v1');
+    script.setAttribute('data-repo-id', 'R_kgDOPurjtQ');
+    script.setAttribute('data-category', 'General');
+    script.setAttribute('data-category-id', 'DIC_kwDOPurjtc4DAzrj');
+    script.setAttribute('data-mapping', 'pathname');
+    script.setAttribute('data-strict', '0');
+    script.setAttribute('data-reactions-enabled', '1');
+    script.setAttribute('data-emit-metadata', '0');
+    script.setAttribute('data-input-position', 'top');
+    script.setAttribute('data-theme', getGiscusTheme());
+    script.setAttribute('data-lang', 'en');
+    script.setAttribute('data-loading', 'lazy');
+    script.setAttribute('crossorigin', 'anonymous');
+    script.async = true;
+
+    container.appendChild(script);
+  }
+
+  function updateGiscusTheme() {
+    const iframe = document.querySelector('iframe.giscus-frame') as HTMLIFrameElement;
+    if (!iframe) return;
+
+    iframe.contentWindow?.postMessage(
+      { giscus: { setConfig: { theme: getGiscusTheme() } } },
+      'https://giscus.app'
+    );
+  }
+
+  document.addEventListener('astro:page-load', loadGiscus);
+
+  const observer = new MutationObserver((mutations) => {
+    mutations.forEach((mutation) => {
+      if (mutation.attributeName === 'class') {
+        updateGiscusTheme();
+      }
+    });
+  });
+
+  observer.observe(document.documentElement, {
+    attributes: true,
+    attributeFilter: ['class'],
+  });
+</script>

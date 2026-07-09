@@ -2,6 +2,7 @@
 import Layout from '@/layouts/Layout.astro';
 import Providers from '@/components/layout/Providers';
 import Footer from '@/components/layout/Footer';
+import Comments from '@/components/blog/Comments.astro';
 
 export interface Props {
   title: string;
@@ -54,6 +55,8 @@ const { title, description, pubDate, tags, readTime } = Astro.props;
       <div class="prose prose-neutral dark:prose-invert max-w-none text-base md:text-lg font-normal leading-relaxed">
         <slot />
       </div>
+
+      <Comments />
     </article>
   </div>
 
