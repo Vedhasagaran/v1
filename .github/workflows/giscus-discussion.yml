@@ -1,0 +1,61 @@
+name: Create Giscus Discussion
+
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - 'src/content/blog/**.md'
+
+jobs:
+  create-discussion:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - name: Get new blog post slugs
+        id: slugs
+        run: |
+          NEW_FILES=$(git diff --name-only --diff-filter=A HEAD~1 HEAD -- 'src/content/blog/*.md')
+          echo "files=$NEW_FILES" >> $GITHUB_OUTPUT
+
+      - name: Create Giscus discussions
+        if: steps.slugs.outputs.files != ''
+        env:
+          GH_TOKEN: ${{ secrets.GH_DISCUSSION_TOKEN }}
+          REPO_ID: R_kgDOPurjtQ
+          CATEGORY_ID: DIC_kwDOPurjtc4DAzrj
+        run: |
+          for FILE in ${{ steps.slugs.outputs.files }}; do
+            SLUG=$(basename "$FILE" .md)
+            TITLE="blog/$SLUG"
+            POST_URL="https://vedhasagaran.dev/blog/$SLUG"
+
+            POST_TITLE=$(grep -m1 '^title:' "$FILE" | sed 's/^title: *//;s/^"//;s/"$//')
+            DESCRIPTION=$(grep -m1 '^description:' "$FILE" | sed 's/^description: *//;s/^"//;s/"$//')
+
+            BODY=$(printf '### [%s](%s)\n\n%s\n\n---\n\n> 💬 Leave a comment or reaction below — your thoughts are always welcome!\n>\n> 🔗 [Read the full post →](%s)' "$POST_TITLE" "$POST_URL" "$DESCRIPTION" "$POST_URL")
+
+            gh api graphql -f query='
+              mutation CreateDiscussion($repositoryId: ID!, $categoryId: ID!, $title: String!, $body: String!) {
+                createDiscussion(input: {
+                  repositoryId: $repositoryId,
+                  categoryId: $categoryId,
+                  title: $title,
+                  body: $body
+                }) {
+                  discussion {
+                    id
+                    url
+                  }
+                }
+              }
+            ' -f repositoryId="$REPO_ID" -f categoryId="$CATEGORY_ID" -f title="$TITLE" -f body="$BODY"
+
+            echo "Created discussion for: $TITLE"
+          done
