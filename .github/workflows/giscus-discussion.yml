@@ -5,14 +5,13 @@ on:
     branches:
       - master
     paths:
-      - 'src/content/blog/**.md'
+      - "src/content/blog/**.md"
 
 jobs:
   create-discussion:
     runs-on: ubuntu-latest
     permissions:
       contents: read
-      discussions: write
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -28,7 +27,7 @@ jobs:
       - name: Create Giscus discussions
         if: steps.slugs.outputs.files != ''
         env:
-          GH_TOKEN: ${{ github.token }}
+          GH_TOKEN: ${{ secrets.GH_DISCUSSION_TOKEN }}
           REPO_ID: R_kgDOPurjtQ
           CATEGORY_ID: DIC_kwDOPurjtc4DAzrj
         run: |
