@@ -17,21 +17,8 @@ interface BlogSearchProps {
 export default function BlogSearch({ posts }: Readonly<BlogSearchProps>) {
   const [db, setDb] = useState<any>(null);
   const [searchQuery, setSearchQuery] = useState('');
-  const [selectedTag, setSelectedTag] = useState<string | null>(null);
+  const [debouncedQuery, setDebouncedQuery] = useState('');
   const [filteredPosts, setFilteredPosts] = useState<Post[]>(posts);
-  const [currentPage, setCurrentPage] = useState(1);
-
-  const allTags = Array.from(
-    new Set(posts.flatMap(post => post.tags))
-  ).sort((a, b) => {
-    const countA = posts.filter(p => p.tags.includes(a)).length;
-    const countB = posts.filter(p => p.tags.includes(b)).length;
-    return countB - countA;
-  });
-
-  useEffect(() => {
-    setCurrentPage(1);
-  }, [searchQuery, selectedTag]);
 
   useEffect(() => {
     async function initOrama() {
@@ -39,194 +26,143 @@ export default function BlogSearch({ posts }: Readonly<BlogSearchProps>) {
         schema: {
           title: 'string',
           description: 'string',
-          tags: 'string[]',
         }
       });
-
       const docs = posts.map(post => ({
         id: post.slug,
         title: post.title,
         description: post.description,
-        tags: post.tags,
       }));
-
       await insertMultiple(oramaDb, docs);
       setDb(oramaDb);
     }
-
     initOrama();
   }, [posts]);
 
   useEffect(() => {
+    const timer = setTimeout(() => setDebouncedQuery(searchQuery), 300);
+    return () => clearTimeout(timer);
+  }, [searchQuery]);
+
+  useEffect(() => {
     async function performSearch() {
       let filtered = posts;
-
-      if (searchQuery.trim() && db) {
+      if (debouncedQuery.trim() && db) {
         const results = await search(db, {
-          term: searchQuery,
-          properties: ['title', 'description', 'tags'],
+          term: debouncedQuery,
+          properties: ['title', 'description'],
           threshold: 0.2,
         });
         const matchedIds = results.hits.map(hit => hit.id);
         filtered = posts.filter(post => matchedIds.includes(post.slug));
       }
-
-      if (selectedTag) {
-        filtered = filtered.filter(post => post.tags.includes(selectedTag));
-      }
-
       setFilteredPosts(filtered);
     }
-
     performSearch();
-  }, [searchQuery, selectedTag, db, posts]);
+  }, [debouncedQuery, db, posts]);
 
   const formatDate = (dateString: string) => {
     return new Intl.DateTimeFormat('en-US', {
-      month: 'long',
-      day: 'numeric',
-      year: 'numeric',
+      month: 'short',
+      day: '2-digit',
     }).format(new Date(dateString));
   };
 
-  const ITEMS_PER_PAGE = 3;
-  const totalPages = Math.ceil(filteredPosts.length / ITEMS_PER_PAGE);
-  const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
-  const paginatedPosts = filteredPosts.slice(startIndex, startIndex + ITEMS_PER_PAGE);
+  const postsByYear = filteredPosts.reduce<Record<number, Post[]>>((groups, post) => {
+    const year = new Date(post.pubDate).getFullYear();
+    (groups[year] ??= []).push(post);
+    return groups;
+  }, {});
+  const years = Object.keys(postsByYear).map(Number).sort((a, b) => b - a);
 
   return (
     <div className="w-full">
-      <div className="flex flex-col gap-6 mb-12">
-        <input
-          type="text"
-          placeholder="Search articles..."
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-          className="w-full h-12 px-4 rounded-xl border border-border bg-card text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-(--accent-color) transition-colors duration-300 shadow-sm"
-        />
-
-        {allTags.length > 0 && (
-          <div 
-            className="flex gap-2 overflow-x-auto py-2 -my-2 no-scrollbar scroll-smooth whitespace-nowrap"
-            style={{
-              scrollbarWidth: 'none',
-              msOverflowStyle: 'none',
-            }}
+      <div className="flex items-baseline justify-between gap-6 mb-3">
+        <h1 className="text-4xl md:text-5xl font-extrabold tracking-tighter text-foreground">
+          Writing
+        </h1>
+        <div className="relative">
+          <svg
+            className="absolute left-0 top-1/2 -translate-y-1/2 w-3 h-3 text-muted-foreground pointer-events-none"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
           >
-            <style dangerouslySetInnerHTML={{__html: `
-              .no-scrollbar::-webkit-scrollbar {
-                display: none;
-              }
-            `}} />
-            <button
-              onClick={() => setSelectedTag(null)}
-              className={`shrink-0 px-4 py-1.5 rounded-full text-xs font-semibold uppercase tracking-widest border transition-all duration-300 ${
-                selectedTag === null
-                  ? 'bg-(--accent-color) border-(--accent-color) text-white'
-                  : 'bg-transparent border-border text-muted-foreground hover:text-foreground'
-              }`}
-            >
-              All
-            </button>
-            {allTags.map(tag => (
-              <button
-                key={tag}
-                onClick={() => setSelectedTag(selectedTag === tag ? null : tag)}
-                className={`shrink-0 px-4 py-1.5 rounded-full text-xs font-semibold uppercase tracking-widest border transition-all duration-300 ${
-                  selectedTag === tag
-                    ? 'bg-(--accent-color) border-(--accent-color) text-white'
-                    : 'bg-transparent border-border text-muted-foreground hover:text-foreground'
-                }`}
-              >
-                {tag}
-              </button>
-            ))}
-          </div>
-        )}
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+          </svg>
+          <input
+            type="text"
+            placeholder="Search..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="h-8 pl-5 pr-0 w-36 focus:w-52 bg-transparent border-0 border-b border-border text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-(--accent-color) transition-all duration-300"
+          />
+        </div>
       </div>
 
-      <div className="border-y border-border">
-        <AnimatePresence mode="popLayout">
-          {paginatedPosts.length > 0 ? (
-            paginatedPosts.map((post, index) => (
-              <motion.a
-                layout
-                key={post.slug}
-                href={`/blog/${post.slug}`}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, scale: 0.95 }}
-                transition={{ duration: 0.4, delay: index * 0.05, ease: [0.16, 1, 0.3, 1] }}
-                className="group block border-b border-border last:border-b-0 py-7 md:py-8"
-              >
-                <div className="flex items-start justify-between gap-5">
-                  <div className="min-w-0 flex-1">
-                    <div className="flex flex-wrap items-center gap-3 mb-3">
-                      <time className="text-xs font-mono text-muted-foreground uppercase tracking-wider">
-                        {formatDate(post.pubDate)}
-                      </time>
-                      <div className="flex flex-wrap gap-1.5">
-                        {post.tags.map(tag => (
-                          <span
-                            key={tag}
-                            className="text-[9px] md:text-[10px] font-semibold px-2 py-0.5 rounded-full border border-border text-muted-foreground uppercase tracking-widest"
-                          >
-                            {tag}
-                          </span>
-                        ))}
-                      </div>
-                    </div>
+      <p className="text-base text-muted-foreground font-light mb-10">
+        Thoughts, guides, and insights on code, architecture, and technology.
+      </p>
 
-                    <h3 className="text-2xl md:text-3xl font-bold tracking-tight text-foreground group-hover:text-(--accent-color) transition-colors duration-300 mb-3">
-                      {post.title}
-                    </h3>
-
-                    <p className="text-base md:text-lg text-muted-foreground leading-relaxed max-w-3xl font-light">
-                      {post.description}
-                    </p>
-                  </div>
-
-                  <span className="mt-1.5 inline-flex items-center gap-1.5 text-(--accent-color) transition-all duration-300 group-hover:translate-x-1">
-                    <span className="text-[11px] md:text-xs font-semibold uppercase tracking-widest">Read</span>
-                    <span aria-hidden="true">&rarr;</span>
+      <AnimatePresence mode="wait">
+        {years.length > 0 ? (
+          <motion.div
+            key={debouncedQuery}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2 }}
+            className="space-y-8"
+          >
+            {years.map(year => (
+              <section key={year}>
+                <div className="flex items-center gap-3 mb-1">
+                  <span className="text-[10px] font-mono font-semibold uppercase tracking-widest text-muted-foreground">
+                    {year}
+                  </span>
+                  <div className="flex-1 h-px bg-(--accent-color) opacity-30" />
+                  <span className="text-[10px] font-mono text-muted-foreground">
+                    {postsByYear[year].length} {postsByYear[year].length === 1 ? 'post' : 'posts'}
                   </span>
                 </div>
-              </motion.a>
-            ))
-          ) : (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              className="py-16 text-center text-muted-foreground"
-            >
-              No articles found matching your criteria.
-            </motion.div>
-          )}
-        </AnimatePresence>
-      </div>
 
-      {totalPages > 1 && (
-        <div className="flex items-center justify-between mt-10">
-          <button
-            onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
-            disabled={currentPage === 1}
-            className="px-4 py-2 text-xs font-semibold uppercase tracking-widest border border-border rounded-xl text-muted-foreground hover:text-foreground hover:border-foreground disabled:opacity-30 disabled:pointer-events-none transition-all duration-300"
+                <div>
+                  {postsByYear[year].map((post, i) => (
+                    <motion.a
+                      key={post.slug}
+                      href={`/blog/${post.slug}`}
+                      initial={{ opacity: 0, x: -8 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ duration: 0.3, delay: i * 0.04, ease: [0.16, 1, 0.3, 1] }}
+                      className="group flex items-baseline justify-between gap-4 py-2"
+                    >
+                      <span className="min-w-0 flex items-baseline gap-2 overflow-hidden text-sm md:text-base font-medium text-foreground group-hover:text-(--accent-color) transition-colors duration-200">
+                        <span className="text-(--accent-color) select-none shrink-0">#</span>
+                        <span className="truncate">{post.title}</span>
+                      </span>
+                      <time
+                        dateTime={post.pubDate}
+                        className="shrink-0 text-[11px] font-mono text-muted-foreground tabular-nums"
+                      >
+                        {formatDate(post.pubDate)}
+                      </time>
+                    </motion.a>
+                  ))}
+                </div>
+              </section>
+            ))}
+          </motion.div>
+        ) : (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="py-16 text-center text-sm text-muted-foreground"
           >
-            &larr; Previous
-          </button>
-          <span className="text-xs font-mono uppercase tracking-widest text-muted-foreground">
-            Page {currentPage} of {totalPages}
-          </span>
-          <button
-            onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
-            disabled={currentPage === totalPages}
-            className="px-4 py-2 text-xs font-semibold uppercase tracking-widest border border-border rounded-xl text-muted-foreground hover:text-foreground hover:border-foreground disabled:opacity-30 disabled:pointer-events-none transition-all duration-300"
-          >
-            Next &rarr;
-          </button>
-        </div>
-      )}
+            No articles found.
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }

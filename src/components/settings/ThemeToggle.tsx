@@ -9,14 +9,14 @@ export default function ThemeToggle() {
     <button
       type="button"
       onClick={toggleTheme}
-      className="relative flex items-center justify-center w-9 h-9 bg-card hover:bg-neutral-900/5 dark:hover:bg-white/5 rounded-full border border-border shadow-sm hover:border-(--accent-color)/50 transition-all duration-300 group shrink-0"
+      className="relative flex items-center justify-center w-8 h-8 bg-card hover:bg-neutral-900/5 dark:hover:bg-white/5 rounded-full border border-border shadow-sm hover:border-(--accent-color)/50 transition-all duration-300 group shrink-0"
       style={{ color: 'var(--accent-color)' }}
       aria-label="Toggle dark/light theme"
     >
       <svg
         id="sun-svg"
         aria-hidden="true"
-        className="absolute left-1/2 top-1/2 h-5 w-5"
+        className="absolute left-1/2 top-1/2 h-4 w-4"
         fill="none"
         focusable="false"
         strokeWidth="1.5"
@@ -42,7 +42,7 @@ export default function ThemeToggle() {
       <svg
         id="moon-svg"
         aria-hidden="true"
-        className="absolute left-1/2 top-1/2 h-5 w-5"
+        className="absolute left-1/2 top-1/2 h-4 w-4"
         fill="none"
         focusable="false"
         stroke="currentColor"

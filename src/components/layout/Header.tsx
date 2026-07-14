@@ -20,8 +20,17 @@ export default function Header() {
   const [activeSection, setActiveSection] = useState('home');
   const [isHome, setIsHome] = useState(true);
   const [hasAnnouncement, setHasAnnouncement] = useState(false);
+  const [isMac, setIsMac] = useState(true);
+
+  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
 
   const closeMobileMenu = () => setIsMobileMenuOpen(false);
+
+  useEffect(() => {
+    if (typeof navigator !== 'undefined') {
+      setIsMac(navigator.userAgent.toUpperCase().indexOf('MAC') >= 0);
+    }
+  }, []);
 
   useEffect(() => {
     const checkAnnouncement = () => {
@@ -83,24 +92,21 @@ export default function Header() {
   };
 
   return (
-    <motion.header
-      initial={{ opacity: 0, y: -20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+    <header
       className={`fixed left-1/2 -translate-x-1/2 z-40 w-[min(94%,960px)] transition-all duration-300 ${
         hasAnnouncement
           ? 'top-[52px] md:top-[56px]'
           : 'top-3 md:top-4'
       }`}
     >
-      <div className="rounded-2xl md:rounded-full border border-border bg-card/80 backdrop-blur-md px-4 py-2.5 md:px-6 md:py-3 shadow-sm">
+      <div className="rounded-2xl md:rounded-full border border-border bg-card/80 backdrop-blur-md px-4 py-1.5 md:px-5 md:py-2 shadow-sm">
         <div className="flex items-center justify-between gap-4">
           <a
             href={isHome ? "#home" : "/"}
-            className="group flex items-center gap-2.5 text-sm md:text-base font-extrabold tracking-tight"
+            className="group flex items-center gap-2 text-xs md:text-sm font-extrabold tracking-tight"
             onClick={closeMobileMenu}
           >
-            <div className="logo-shine-container h-6 w-6 md:h-7 md:w-7 rounded-lg">
+            <div className="logo-shine-container h-5 w-5 md:h-6 md:w-6 rounded-lg">
               <img
                 src={isDark ? ASSETS.logos.dark : ASSETS.logos.light}
                 alt="Logo"
@@ -118,34 +124,65 @@ export default function Header() {
           </a>
 
           <div className="flex items-center gap-3">
-            <nav aria-label="Primary" className="hidden md:flex items-center gap-5">
-              {navItems.map((item) => (
+            <nav aria-label="Primary" className="hidden md:flex items-center gap-1.5" onMouseLeave={() => setHoveredIndex(null)}>
+              {navItems.map((item, idx) => (
                 <a
                   key={item.href}
                   href={item.href}
-                  className={`text-xs uppercase tracking-[0.16em] font-semibold transition-colors duration-300 ${
+                  onMouseEnter={() => setHoveredIndex(idx)}
+                  className={`relative px-3 py-1.5 text-xs uppercase tracking-[0.16em] font-semibold transition-colors duration-300 ${
                     isLinkActive(item.href)
                       ? 'text-(--accent-color)'
                       : 'text-muted-foreground hover:text-foreground'
                   }`}
                 >
+                  {hoveredIndex === idx && (
+                    <motion.span
+                      layoutId="nav-hover-pill"
+                      className="absolute inset-0 bg-neutral-900/5 dark:bg-white/5 border border-(--accent-color)/30 rounded-full -z-10"
+                      transition={{ type: 'spring', stiffness: 350, damping: 25 }}
+                    />
+                  )}
                   {item.label}
                 </a>
               ))}
             </nav>
 
+            <button
+              type="button"
+              aria-label={`Search articles (${isMac ? '⌘K' : 'Ctrl+K'})`}
+              onClick={() => window.dispatchEvent(new CustomEvent('open-search'))}
+              className="hidden md:flex items-center gap-2 h-8 pl-2.5 pr-3 rounded-full bg-neutral-900/5 dark:bg-white/5 hover:bg-neutral-900/10 dark:hover:bg-white/10 text-muted-foreground hover:text-foreground transition-all duration-300 shrink-0 select-none"
+            >
+              <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+              </svg>
+              <kbd className="text-[10px] font-mono opacity-80 tracking-tight">{isMac ? '⌘K' : 'Ctrl+K'}</kbd>
+            </button>
+
             <ThemeToggle />
+
+            <button
+              type="button"
+              aria-label="Search articles"
+              onClick={() => window.dispatchEvent(new CustomEvent('open-search'))}
+              className="md:hidden inline-flex items-center justify-center h-8 w-8 rounded-full border border-border text-muted-foreground"
+            >
+              <svg className="h-3.5 h-3.5" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+              </svg>
+            </button>
 
             <button
               type="button"
               aria-expanded={isMobileMenuOpen}
               aria-controls="mobile-nav"
               aria-label="Toggle navigation menu"
-              className="md:hidden inline-flex items-center justify-center h-9 w-9 rounded-full border border-border text-foreground"
+              className="md:hidden inline-flex items-center justify-center h-8 w-8 rounded-full border border-border text-foreground"
               onClick={() => setIsMobileMenuOpen((prev) => !prev)}
             >
               <svg
-                className="h-4 w-4"
+                className="h-3.5 h-3.5"
                 fill="none"
                 stroke="currentColor"
                 strokeWidth={2}
@@ -191,6 +228,6 @@ export default function Header() {
           )}
         </AnimatePresence>
       </div>
-    </motion.header>
+    </header>
   );
 }

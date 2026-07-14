@@ -40,6 +40,8 @@ function ProjectCard({ project }: Readonly<{ project: Project }>) {
     setIsExpanded(!isExpanded);
   };
 
+  const isContain = project.objectFit === 'contain';
+
   return (
     <motion.a
       href={project.link}
@@ -48,15 +50,13 @@ function ProjectCard({ project }: Readonly<{ project: Project }>) {
       variants={cardVariants}
       className="group flex flex-col h-full bg-[var(--card)] border border-border rounded-2xl overflow-hidden shadow-sm hover:shadow-md hover:border-(--accent-color)/50 hover:-translate-y-1 transition-all duration-300"
     >
-      <div className={`relative aspect-video w-full overflow-hidden border-b border-border flex items-center justify-center transition-colors duration-300 ${
-        project.objectFit === 'contain' ? 'bg-white' : 'bg-neutral-900/5 dark:bg-white/5'
-      }`}>
+      <div className="relative aspect-video w-full overflow-hidden border-b border-border flex items-center justify-center bg-neutral-900/5 dark:bg-white/5 transition-colors duration-300">
         <img
           src={project.image ?? ASSETS.projects.defaultCover}
           alt={project.title}
           className={`transform group-hover:scale-105 transition-transform duration-500 ${
-            project.objectFit === 'contain' 
-              ? 'max-h-[60%] max-w-[80%] object-contain' 
+            isContain
+              ? 'max-h-[85%] max-w-[85%] object-contain rounded-lg shadow-sm'
               : 'w-full h-full object-cover'
           }`}
           loading="lazy"
@@ -65,15 +65,15 @@ function ProjectCard({ project }: Readonly<{ project: Project }>) {
 
       <div className="flex flex-col flex-1 p-5 md:p-6 justify-between gap-5">
         <div className="flex flex-col gap-2.5">
-          <div className="flex items-start justify-between gap-2.5">
-            <h3 className="text-xl font-bold tracking-tight text-foreground group-hover:text-(--accent-color) transition-colors duration-300">
-              {project.title}
-            </h3>
+          <div className="flex flex-col gap-1.5 items-start">
             {project.stats && (
-              <span className="shrink-0 text-[10px] font-semibold px-2.5 py-0.5 rounded-full border border-border text-muted-foreground uppercase tracking-wider bg-neutral-900/5 dark:bg-white/5">
+              <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full border border-border text-muted-foreground uppercase tracking-wider bg-neutral-900/5 dark:bg-white/5">
                 {getProjectMetaText(project.stats)}
               </span>
             )}
+            <h3 className="text-xl font-bold tracking-tight text-foreground group-hover:text-(--accent-color) transition-colors duration-300">
+              {project.title}
+            </h3>
           </div>
 
           <div className="text-sm text-muted-foreground leading-relaxed font-light">

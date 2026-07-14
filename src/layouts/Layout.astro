@@ -1,6 +1,8 @@
 ---
+import { getCollection } from 'astro:content';
 import { ClientRouter } from 'astro:transitions';
 import { ASSETS } from '@/data/assets';
+import SearchDialog from '@/components/layout/SearchDialog';
 import '../styles/global.css';
 
 export interface Props {
@@ -23,6 +25,17 @@ const {
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 const isHome = Astro.url.pathname === '/';
+
+const blogPosts = (await getCollection('blog'))
+  .filter(p => !p.data.draft)
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+  .map(p => ({
+    slug: p.slug,
+    title: p.data.title,
+    description: p.data.description ?? '',
+    pubDate: p.data.pubDate.toISOString(),
+    tags: p.data.tags ?? [],
+  }));
 ---
 
 <!doctype html>
@@ -175,6 +188,7 @@ const isHome = Astro.url.pathname === '/';
     <ClientRouter />
   </head>
   <body style="background-color: var(--background); color: var(--foreground); transition: background-color 0.3s, color 0.3s;">
+    <SearchDialog client:load posts={blogPosts} />
     <slot />
     
     <!-- Lenis Smooth Scroll -->
