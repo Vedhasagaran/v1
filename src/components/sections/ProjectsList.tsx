@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence, type Variants } from 'framer-motion';
 import type { Project } from '@/data/projectsData';
 import { ASSETS } from '@/data/assets';
@@ -31,13 +31,20 @@ const cardVariants: Variants = {
   visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] as any } },
 };
 
-function ProjectCard({ project }: Readonly<{ project: Project }>) {
+function ProjectCard({ project, onTriggerToast }: Readonly<{ project: Project; onTriggerToast: (msg: string) => void }>) {
   const [isExpanded, setIsExpanded] = useState(false);
 
   const toggleExpand = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
     setIsExpanded(!isExpanded);
+  };
+
+  const handleClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    if (project.link.includes('vedhasagaran.dev')) {
+      e.preventDefault();
+      onTriggerToast("You're already on my website! 😉");
+    }
   };
 
   const isContain = project.objectFit === 'contain';
@@ -47,6 +54,7 @@ function ProjectCard({ project }: Readonly<{ project: Project }>) {
       href={project.link}
       target="_blank"
       rel="noopener noreferrer"
+      onClick={handleClick}
       variants={cardVariants}
       className="group flex flex-col h-full bg-[var(--card)] border border-border rounded-2xl overflow-hidden shadow-sm hover:shadow-md hover:border-(--accent-color)/50 hover:-translate-y-1 transition-all duration-300"
     >
@@ -124,6 +132,15 @@ function ProjectCard({ project }: Readonly<{ project: Project }>) {
 }
 
 export default function ProjectsList({ projects }: Readonly<ProjectsListProps>) {
+  const [toastMessage, setToastMessage] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (toastMessage) {
+      const timer = setTimeout(() => setToastMessage(null), 3000);
+      return () => clearTimeout(timer);
+    }
+  }, [toastMessage]);
+
   return (
     <div className="w-full">
       <motion.h2
@@ -144,9 +161,27 @@ export default function ProjectsList({ projects }: Readonly<ProjectsListProps>) 
         className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 w-full"
       >
         {projects.map((project) => (
-          <ProjectCard key={project.title} project={project} />
+          <ProjectCard
+            key={project.title}
+            project={project}
+            onTriggerToast={setToastMessage}
+          />
         ))}
       </motion.div>
+
+      <AnimatePresence>
+        {toastMessage && (
+          <motion.div
+            initial={{ opacity: 0, y: 50, scale: 0.9 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 20, scale: 0.9 }}
+            className="fixed bottom-8 left-1/2 -translate-x-1/2 z-50 flex items-center gap-2.5 px-4 py-3 rounded-xl border border-border bg-[var(--card)]/90 backdrop-blur-md shadow-lg text-sm text-foreground max-w-sm text-center"
+          >
+            <span className="text-(--accent-color) text-base shrink-0">✨</span>
+            <span>{toastMessage}</span>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }

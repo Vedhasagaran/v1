@@ -85,4 +85,16 @@ export const projects: Project[] = [
       value: "Package",
     },
   },
+  {
+    title: "vedhasagaran.dev",
+    description:
+      "My personal portfolio and blog showcasing all my projects, experiences, and open-source contributions. Built with Astro, React, and Tailwind CSS.",
+    link: "https://vedhasagaran.dev",
+    tags: ["Astro", "React", "TypeScript", "Tailwind CSS"],
+    image: ASSETS.profile,
+    stats: {
+      label: "Status",
+      value: "Live",
+    },
+  },
 ];

@@ -6,10 +6,22 @@ import { useTheme } from '@/contexts/ThemeContext';
 import ThemeToggle from '@/components/settings/ThemeToggle';
 import { ASSETS } from '@/data/assets';
 
-const navItems = [
+interface NavItem {
+  label: string;
+  href?: string;
+  children?: { label: string; href: string }[];
+}
+
+const navItems: NavItem[] = [
   { label: 'About', href: '/#about' },
   { label: 'Experience', href: '/experience' },
   { label: 'Projects', href: '/projects' },
+  {
+    label: 'Resources',
+    children: [
+      { label: 'Developer Portfolios', href: '/portfolios' }
+    ]
+  },
   { label: 'Blog', href: '/blog' },
   { label: 'Contact', href: '/contact' },
 ];
@@ -23,6 +35,7 @@ export default function Header() {
   const [isMac, setIsMac] = useState(true);
 
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+  const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
 
   const closeMobileMenu = () => setIsMobileMenuOpen(false);
 
@@ -59,6 +72,8 @@ export default function Header() {
       setActiveSection('experience');
     } else if (pathname.startsWith('/projects')) {
       setActiveSection('projects');
+    } else if (pathname.startsWith('/portfolios')) {
+      setActiveSection('portfolios');
     } else if (pathname.startsWith('/blog')) {
       setActiveSection('blog');
     } else if (pathname.startsWith('/contact')) {
@@ -84,11 +99,14 @@ export default function Header() {
     }
   }, []);
 
-  const isLinkActive = (href: string) => {
-    if (href.startsWith('/#')) {
-      return activeSection === href.split('#')[1];
+  const isLinkActive = (item: NavItem) => {
+    if (item.children) {
+      return item.children.some(child => activeSection === child.href.replace(/^\//, ''));
     }
-    return activeSection === href.replace(/^\//, '');
+    if (item.href?.startsWith('/#')) {
+      return activeSection === item.href.split('#')[1];
+    }
+    return activeSection === item.href?.replace(/^\//, '');
   };
 
   return (
@@ -125,27 +143,101 @@ export default function Header() {
 
           <div className="flex items-center gap-3">
             <nav aria-label="Primary" className="hidden md:flex items-center gap-1.5" onMouseLeave={() => setHoveredIndex(null)}>
-              {navItems.map((item, idx) => (
-                <a
-                  key={item.href}
-                  href={item.href}
-                  onMouseEnter={() => setHoveredIndex(idx)}
-                  className={`relative px-3 py-1.5 text-xs uppercase tracking-[0.16em] font-semibold transition-colors duration-300 ${
-                    isLinkActive(item.href)
-                      ? 'text-(--accent-color)'
-                      : 'text-muted-foreground hover:text-foreground'
-                  }`}
-                >
-                  {hoveredIndex === idx && (
-                    <motion.span
-                      layoutId="nav-hover-pill"
-                      className="absolute inset-0 bg-neutral-900/5 dark:bg-white/5 border border-(--accent-color)/30 rounded-full -z-10"
-                      transition={{ type: 'spring', stiffness: 350, damping: 25 }}
-                    />
-                  )}
-                  {item.label}
-                </a>
-              ))}
+              {navItems.map((item, idx) => {
+                if (item.children) {
+                  return (
+                    <div
+                      key={item.label}
+                      className="relative py-1.5"
+                      onMouseEnter={() => {
+                        setActiveDropdown(item.label.toLowerCase());
+                        setHoveredIndex(idx);
+                      }}
+                      onMouseLeave={() => {
+                        setActiveDropdown(null);
+                        setHoveredIndex(null);
+                      }}
+                    >
+                      <button
+                        type="button"
+                        className={`relative px-3 py-1.5 text-xs uppercase tracking-[0.16em] font-semibold transition-colors duration-300 flex items-center gap-1 cursor-pointer select-none focus:outline-none ${
+                          isLinkActive(item)
+                            ? 'text-(--accent-color)'
+                            : 'text-muted-foreground hover:text-foreground'
+                        }`}
+                      >
+                        {hoveredIndex === idx && (
+                          <motion.span
+                            layoutId="nav-hover-pill"
+                            className="absolute inset-0 bg-neutral-900/5 dark:bg-white/5 border border-(--accent-color)/30 rounded-full -z-10"
+                            transition={{ type: 'spring', stiffness: 350, damping: 25 }}
+                          />
+                        )}
+                        <span>{item.label}</span>
+                        <svg
+                          className={`h-3 w-3 transition-transform duration-200 ${
+                            activeDropdown === item.label.toLowerCase() ? 'rotate-180' : ''
+                          }`}
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth={2.5}
+                          viewBox="0 0 24 24"
+                        >
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+                        </svg>
+                      </button>
+
+                      <AnimatePresence>
+                        {activeDropdown === item.label.toLowerCase() && (
+                          <motion.div
+                            initial={{ opacity: 0, y: 8, scale: 0.95 }}
+                            animate={{ opacity: 1, y: 0, scale: 1 }}
+                            exit={{ opacity: 0, y: 8, scale: 0.95 }}
+                            transition={{ duration: 0.15 }}
+                            className="absolute top-full left-1/2 -translate-x-1/2 mt-1 w-48 rounded-xl border border-border bg-[var(--card)] p-1.5 shadow-lg z-50"
+                          >
+                            {item.children.map((child) => (
+                              <a
+                                key={child.href}
+                                href={child.href}
+                                className={`block rounded-lg px-3 py-2 text-xs font-semibold tracking-wide transition-colors ${
+                                  activeSection === child.href.replace(/^\//, '')
+                                    ? 'text-(--accent-color) bg-neutral-900/5 dark:bg-white/5'
+                                    : 'text-muted-foreground hover:text-foreground hover:bg-neutral-900/5 dark:hover:bg-white/5'
+                                }`}
+                              >
+                                {child.label}
+                              </a>
+                            ))}
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
+                    </div>
+                  );
+                }
+
+                return (
+                  <a
+                    key={item.href}
+                    href={item.href}
+                    onMouseEnter={() => setHoveredIndex(idx)}
+                    className={`relative px-3 py-1.5 text-xs uppercase tracking-[0.16em] font-semibold transition-colors duration-300 ${
+                      isLinkActive(item)
+                        ? 'text-(--accent-color)'
+                        : 'text-muted-foreground hover:text-foreground'
+                    }`}
+                  >
+                    {hoveredIndex === idx && (
+                      <motion.span
+                        layoutId="nav-hover-pill"
+                        className="absolute inset-0 bg-neutral-900/5 dark:bg-white/5 border border-(--accent-color)/30 rounded-full -z-10"
+                        transition={{ type: 'spring', stiffness: 350, damping: 25 }}
+                      />
+                    )}
+                    {item.label}
+                  </a>
+                );
+              })}
             </nav>
 
             <button
@@ -210,20 +302,46 @@ export default function Header() {
               transition={{ duration: 0.2 }}
               className="md:hidden mt-3 rounded-xl border border-border bg-card px-2 py-2"
             >
-              {navItems.map((item) => (
-                <a
-                  key={`mobile-${item.href}`}
-                  href={item.href}
-                  onClick={closeMobileMenu}
-                  className={`block rounded-lg px-3 py-2 text-xs uppercase tracking-[0.14em] font-semibold transition-colors duration-300 ${
-                    isLinkActive(item.href)
-                      ? 'text-(--accent-color) bg-black/5 dark:bg-white/10'
-                      : 'text-muted-foreground hover:text-foreground hover:bg-black/5 dark:hover:bg-white/5'
-                  }`}
-                >
-                  {item.label}
-                </a>
-              ))}
+              {navItems.map((item) => {
+                if (item.children) {
+                  return (
+                    <div key={item.label} className="flex flex-col gap-1 py-1">
+                      <span className="block px-3 pt-1 text-[10px] uppercase tracking-[0.16em] font-bold text-muted-foreground">
+                        {item.label}
+                      </span>
+                      {item.children.map((child) => (
+                        <a
+                          key={`mobile-${child.href}`}
+                          href={child.href}
+                          onClick={closeMobileMenu}
+                          className={`block rounded-lg pl-6 pr-3 py-2 text-xs uppercase tracking-[0.14em] font-semibold transition-colors duration-300 ${
+                            activeSection === child.href.replace(/^\//, '')
+                              ? 'text-(--accent-color) bg-black/5 dark:bg-white/10'
+                              : 'text-muted-foreground hover:text-foreground hover:bg-black/5 dark:hover:bg-white/5'
+                          }`}
+                        >
+                          {child.label}
+                        </a>
+                      ))}
+                    </div>
+                  );
+                }
+
+                return (
+                  <a
+                    key={`mobile-${item.href}`}
+                    href={item.href}
+                    onClick={closeMobileMenu}
+                    className={`block rounded-lg px-3 py-2 text-xs uppercase tracking-[0.14em] font-semibold transition-colors duration-300 ${
+                      isLinkActive(item)
+                        ? 'text-(--accent-color) bg-black/5 dark:bg-white/10'
+                        : 'text-muted-foreground hover:text-foreground hover:bg-black/5 dark:hover:bg-white/5'
+                    }`}
+                  >
+                    {item.label}
+                  </a>
+                );
+              })}
             </motion.nav>
           )}
         </AnimatePresence>

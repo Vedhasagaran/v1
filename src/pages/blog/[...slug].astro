@@ -1,6 +1,7 @@
 ---
 import { getCollection } from 'astro:content';
 import BlogPostLayout from '@/layouts/BlogPostLayout.astro';
+import { ASSETS } from '@/data/assets';
 
 export async function getStaticPaths() {
   const posts = await getCollection('blog');
@@ -16,6 +17,11 @@ const { Content } = await entry.render();
 const words = entry.body.split(/\s+/).length;
 const minutes = Math.max(1, Math.ceil(words / 200));
 const readTime = `${minutes} min read`;
+
+const camelize = (str: string) => str.replace(/-./g, x => x[1].toUpperCase());
+const slugKey = camelize(entry.slug) as keyof typeof ASSETS.blog;
+const blogAsset = ASSETS.blog[slugKey];
+const postImageSrc = blogAsset ? blogAsset.src : ASSETS.ogImage;
 ---
 
 <BlogPostLayout
@@ -24,6 +30,8 @@ const readTime = `${minutes} min read`;
   pubDate={entry.data.pubDate}
   tags={entry.data.tags}
   readTime={readTime}
+  image={postImageSrc}
+  heroImage={blogAsset}
 >
   <Content />
 </BlogPostLayout>

@@ -10,12 +10,18 @@ export interface Props {
   pubDate: Date;
   tags: string[];
   readTime?: string;
+  image?: string;
+  heroImage?: {
+    src: string;
+    alt: string;
+    caption?: string;
+  };
 }
 
-const { title, description, pubDate, tags, readTime } = Astro.props;
+const { title, description, pubDate, tags, readTime, image, heroImage } = Astro.props;
 ---
 
-<Layout title={title} description={description} type="article" pubDate={pubDate}>
+<Layout title={title} description={description} type="article" pubDate={pubDate} image={image}>
   <Providers client:load skills={[]} />
   
   <div id="progress-bar-container" class="fixed top-0 left-0 w-full h-1 bg-transparent z-[100]">
@@ -51,6 +57,21 @@ const { title, description, pubDate, tags, readTime } = Astro.props;
           )}
         </div>
       </header>
+
+      {heroImage && (
+        <div class="mb-12">
+          <img
+            src={heroImage.src}
+            alt={heroImage.alt}
+            class="w-full h-auto rounded-2xl border border-border"
+          />
+          {heroImage.caption && (
+            <p class="text-center text-[11px] md:text-xs text-muted-foreground mt-3 font-semibold tracking-wide italic">
+              {heroImage.caption}
+            </p>
+          )}
+        </div>
+      )}
       
       <div class="prose prose-neutral dark:prose-invert max-w-none text-base md:text-lg font-normal leading-relaxed">
         <slot />

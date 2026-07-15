@@ -1,0 +1,30 @@
+---
+import Layout from '@/layouts/Layout.astro';
+import Providers from '@/components/layout/Providers';
+import PortfoliosList from '@/components/sections/PortfoliosList';
+import Footer from '@/components/layout/Footer';
+---
+
+<Layout
+  title="Developer Portfolios - Vedhasagaran"
+  description="Browse developer portfolios from the popular emmabostian/developer-portfolios collection with live previews, pagination, and tags."
+>
+  <Providers client:load skills={[]} />
+
+  <div class="max-w-6xl mx-auto px-6 pt-36 pb-16 flex flex-col gap-10 items-center justify-center w-full">
+    <div class="text-center flex flex-col gap-3 max-w-2xl">
+      <h1 class="text-4xl font-extrabold tracking-tight text-foreground sm:text-5xl">
+        Developer Portfolios
+      </h1>
+      <p class="text-base text-muted-foreground">
+        I frequently visit <a href="https://github.com/emmabostian/developer-portfolios" target="_blank" rel="noopener noreferrer" class="text-(--accent-color) hover:underline font-semibold">emmabostian/developer-portfolios</a> to find portfolio inspiration. However, opening each link individually was tedious, which is why I created this interactive preview directory. I plan to curate this list further in the future.
+      </p>
+    </div>
+
+    <div class="w-full">
+      <PortfoliosList client:load />
+    </div>
+  </div>
+
+  <Footer />
+</Layout>
